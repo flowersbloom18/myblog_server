@@ -16,3 +16,5 @@ system:
   host: 0.0.0.0
   port: 8080
   env: release
+juhe:
+  key: 8xxxxxxxxxxxxx2 # 申请并替换（免费50次/天，一般够用）  https://dashboard.juhe.cn/data/index/apply
