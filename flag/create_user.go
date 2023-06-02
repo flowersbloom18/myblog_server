@@ -37,7 +37,7 @@ func CreateUser(permissions string) {
 	if permissions == "admin" {
 		role = model_type.PermissionAdmin
 	}
-	err := user_service.UserService{}.CreateUser(userName, nickName, password, role, email, "127.0.0.1")
+	err := user_service.UserService{}.CreateUser(userName, nickName, password, role, email, "127.0.0.1", "未知设备")
 	if err != nil {
 		global.Log.Error(err)
 		return

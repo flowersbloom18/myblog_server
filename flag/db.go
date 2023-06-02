@@ -11,6 +11,7 @@ func Makemigrations() {
 	err = global.DB.Set("gorm:table_options", "ENGINE=InnoDB").
 		AutoMigrate(
 			&models.UserModel{},
+			&models.LogModel{},
 			//go run main.go -db数据库迁移
 		)
 	if err != nil {

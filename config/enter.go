@@ -5,4 +5,7 @@ type Config struct {
 	Logger Logger `yaml:"logger"`
 	System System `yaml:"system"`
 	Juhe   Juhe   `yaml:"juhe"`
+	Jwt    Jwt    `yaml:"jwt"`
+	Redis  Redis  `yaml:"redis"`
+	Email  Email  `yaml:"email"`
 }

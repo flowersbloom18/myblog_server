@@ -11,7 +11,7 @@ import (
 
 const Avatar = "/uploads/avatar/favicon.png"
 
-func (UserService) CreateUser(userName, nickName, password string, role model_type.Role, email string, ip string) error {
+func (UserService) CreateUser(userName, nickName, password string, role model_type.Role, email string, ip string, device string) error {
 	// 判断用户名是否存在
 	var userModel models.UserModel
 	err := global.DB.Take(&userModel, "user_name = ?", userName).Error
@@ -36,7 +36,8 @@ func (UserService) CreateUser(userName, nickName, password string, role model_ty
 		Avatar:         Avatar,
 		IP:             ip,
 		Address:        address,
-		RegisterOrigin: model_type.SignEmail,
+		RegisterOrigin: model_type.Sign,
+		Device:         device,
 	}).Error
 	if err != nil {
 		return err

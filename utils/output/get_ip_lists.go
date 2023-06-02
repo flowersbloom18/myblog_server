@@ -6,6 +6,7 @@ import (
 	"net"
 )
 
+// GetIPList 获取本机可用ip列表
 func GetIPList() (ipList []string) {
 	interfaces, err := net.Interfaces()
 	if err != nil {

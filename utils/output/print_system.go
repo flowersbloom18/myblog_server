@@ -4,6 +4,7 @@ import (
 	"myblog_server/global"
 )
 
+// PrintSystem 在命令行输出本机所有可用的ip
 func PrintSystem() {
 
 	ip := global.Config.System.Host

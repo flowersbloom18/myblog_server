@@ -21,6 +21,7 @@ type IPRequest struct {
 	ErrorCode int `json:"error_code"`
 }
 
+// GetAddressByIp 将ip转为对应的地址
 func GetAddressByIp(ip string) (address string) {
 	key := global.Config.Juhe.Key
 	url := fmt.Sprintf("http://apis.juhe.cn/ip/ipNewV3?ip=" + ip + "&key=" + key)
@@ -40,10 +41,10 @@ func GetAddressByIp(ip string) (address string) {
 	err = json.Unmarshal(body, &result)
 	if err != nil {
 		//解析失败也是未知，解析失败有可能是接口出错了。
-		address = "未知"
+		address = "未知地址"
 		global.Log.Error("数据解析失败:", err)
 	}
-	//判断是否响应成功，若响应失败，🥤有可能是次数用完了。就给一个未知。🥤也可能是接口出现错误
+	//判断是否响应成功，若响应失败，🥤有可能是次数用完了。就给一个未知地址。🥤也可能是接口出现错误
 	if result.Resultcode == "200" && result.Reason == "查询成功" {
 		// 判断是否为内网IP，
 		if result.Result.Isp == "保留IP" {
@@ -66,7 +67,7 @@ func GetAddressByIp(ip string) (address string) {
 		}
 
 	} else {
-		address = "未知"
+		address = "未知地址"
 		global.Log.Warn("查询失败")
 	}
 

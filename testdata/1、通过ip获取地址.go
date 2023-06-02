@@ -31,7 +31,8 @@ func main() {
 	//ip := "1.1.127.255" 	//日本
 	//ip := "1.4.0.255" 	//澳大利亚
 	//ip := "1.14.191.255"  //中国-广东-广州
-	ip := "1.23.253.25" //印度-马哈拉施特拉邦
+	//ip := "1.23.253.25" //印度-马哈拉施特拉邦
+	ip := "127.0.0.1"
 	key := global.Config.Juhe.Key
 	url := fmt.Sprintf("http://apis.juhe.cn/ip/ipNewV3?ip=" + ip + "&key=" + key)
 	// 发送GET请求

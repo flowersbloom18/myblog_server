@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// InitGorm 数据库连接初始化
 func InitGorm() *gorm.DB {
 	if global.Config.Mysql.Host == "" {
 		global.Log.Warnln("未配置mysql，取消gorm连接")

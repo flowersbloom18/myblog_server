@@ -1,10 +1,10 @@
 mysql:
-  host: 10.211.55.24
+  host: 10.211.55.24 # ⚠️上线修改
   port: 3306
   config: charset=utf8mb4&parseTime=True&loc=Local
-  db: blog_server
-  user: blog_server
-  password: 7F3B4Hmjei2mZfDT
+  db: blog_server # ⚠️
+  user: blog_server # ⚠️
+  password: 7F3B4Hmjei2mZfDT # ⚠️
   log_level: dev
 logger:
   level: info
@@ -16,5 +16,22 @@ system:
   host: 0.0.0.0
   port: 8080
   env: release
-juhe:
-  key: 8xxxxxxxxxxxxx2 # 申请并替换（免费50次/天，一般够用）  https://dashboard.juhe.cn/data/index/apply
+juhe: #根据ip获得地址
+  key: xxx  # ⚠️ 申请并替换（免费50次/天，一般够用）  https://dashboard.juhe.cn/data/index/apply
+jwt:
+  secret: xxx # ⚠️
+  expires: 2 # 过期时间两小时
+  issuer: "xxx" # ⚠️
+redis:
+  ip: 10.211.55.24 # ⚠️
+  port: 6379
+  password: 123456 # ⚠️
+  pool_size: 999
+email:
+  host: smtp.qq.com
+  port: 465
+  send_email: xxx@qq.com # ⚠️
+  password: xxx # ⚠️
+  send_name: xxx # ⚠️
+  logo_email: xxx# ⚠️
+
