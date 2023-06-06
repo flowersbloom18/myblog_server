@@ -22,8 +22,11 @@ func InitRouter() *gin.Engine {
 	// 虚拟的路由群包裹真正的路由群构建了对象
 	routerGroupApp := RouterGroup{apiRouterGroup}
 	// 挂载
-	routerGroupApp.UserRouter()
-	routerGroupApp.LogData()
+	routerGroupApp.User()
+	routerGroupApp.Log()
+	routerGroupApp.Category()
+	routerGroupApp.Tag()
+	routerGroupApp.Blog()
 
 	return router
 }

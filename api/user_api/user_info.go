@@ -14,7 +14,7 @@ func (UserApi) UserInfoView(c *gin.Context) {
 	_claims, _ := c.Get("claims") // 断言，然后调用
 	claims := _claims.(*jwt.Claims)
 
-	var userInfo models.UserModel
+	var userInfo models.User
 	err := global.DB.Take(&userInfo, claims.UserID).Error
 	if err != nil {
 		response.FailWithMessage("用户不存在", c)

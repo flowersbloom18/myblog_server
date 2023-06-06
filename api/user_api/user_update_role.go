@@ -26,7 +26,7 @@ func (UserApi) UserUpdateRoleView(c *gin.Context) {
 		response.FailWithError(err, &cr, c)
 		return
 	}
-	var user models.UserModel
+	var user models.User
 	err := global.DB.Take(&user, cr.UserID).Error
 	if err != nil {
 		response.FailWithMessage("用户id错误，用户不存在", c)
@@ -50,17 +50,15 @@ func (UserApi) UserUpdateRoleView(c *gin.Context) {
 
 		//⚠️系统日志记录
 		logContent := "修改权限成功"
-		global.DB.Create(&models.LogModel{
-			UserName:  user.UserName,
-			NickName:  user.NickName,
-			IP:        user.IP,
-			Address:   user.Address,
-			Device:    user.Device,
-			Level:     "info",
-			Content:   logContent,
-			LoginType: model_type.Sign, //把邮箱或者用户名登录，在后台统称为邮箱登录
+		global.DB.Create(&models.Log{
+			UserName: user.UserName,
+			NickName: user.NickName,
+			IP:       user.IP,
+			Address:  user.Address,
+			Device:   user.Device,
+			Level:    "info",
+			Content:  logContent,
 		})
-
 		response.OkWithMessage("修改权限成功", c)
 	}
 }

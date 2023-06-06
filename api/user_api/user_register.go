@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"myblog_server/global"
 	"myblog_server/models/response"
-	"myblog_server/service/user_service"
+	"myblog_server/service"
 	"myblog_server/utils/device"
 )
 
@@ -17,6 +17,7 @@ type UserRegister struct {
 
 // UserRegisterView 创建用户
 func (UserApi) UserRegisterView(c *gin.Context) {
+	serviceApp := service.ServiceApp
 	var cr UserRegister
 	if err := c.ShouldBindJSON(&cr); err != nil {
 		response.FailWithError(err, &cr, c)
@@ -24,7 +25,7 @@ func (UserApi) UserRegisterView(c *gin.Context) {
 	}
 	device := device.GetLoginDevice(c)
 	// 用户自己注册，权限为2固定
-	err := user_service.UserService{}.CreateUser(cr.UserName, cr.NickName, cr.Password, 2, "", c.ClientIP(), device)
+	err := serviceApp.UserService.CreateUser(cr.UserName, cr.NickName, cr.Password, 2, "", c.ClientIP(), device)
 	if err != nil {
 		global.Log.Error(err)
 		response.FailWithMessage(err.Error(), c)

@@ -2,7 +2,7 @@ package models
 
 import "myblog_server/models/model_type"
 
-type UserModel struct {
+type User struct {
 	MODEL
 	UserName       string                `gorm:"size:36" json:"user_name"`                    // 用户名
 	Password       string                `gorm:"size:128" json:"-"`                           // 密码

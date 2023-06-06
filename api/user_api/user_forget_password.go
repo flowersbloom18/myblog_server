@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"myblog_server/global"
 	"myblog_server/models"
-	"myblog_server/models/model_type"
 	"myblog_server/models/response"
 	"myblog_server/plugins/email"
 	"myblog_server/service/redis_service"
@@ -34,7 +33,7 @@ func (UserApi) UserForgetPasswordView(c *gin.Context) {
 		// ⚠️优化了邮箱不存在、两次邮箱输入不一致的情况，以及恢复密码后，删除该key
 
 		// 判断邮箱是否存在，不存在正是需要的
-		var userModel models.UserModel
+		var userModel models.User
 		err = global.DB.Take(&userModel, "email = ?", cr.Email).Error
 		// 如果err!=nil，表示系统找不到邮箱
 		if err != nil {
@@ -72,7 +71,7 @@ func (UserApi) UserForgetPasswordView(c *gin.Context) {
 	// 第二次，用户输入邮箱，验证码，密码
 
 	// ⚠️判断邮箱是否存在
-	var userModel models.UserModel
+	var userModel models.User
 	err = global.DB.Take(&userModel, "email = ?", cr.Email).Error
 	// 如果err!=nil，表示系统找不到邮箱
 	if err != nil {
@@ -106,7 +105,7 @@ func (UserApi) UserForgetPasswordView(c *gin.Context) {
 	}
 
 	// 修改用户的邮箱
-	var user models.UserModel
+	var user models.User
 
 	// 查询对应邮箱的用户并将信息存储到user中
 	err = global.DB.Take(&user, "email = ?", cr.Email).Error
@@ -134,15 +133,14 @@ func (UserApi) UserForgetPasswordView(c *gin.Context) {
 
 	// 系统日志记录
 	logContent := "密码修改成功"
-	global.DB.Create(&models.LogModel{
-		UserName:  user.UserName,
-		NickName:  user.NickName,
-		IP:        user.IP,
-		Address:   user.Address,
-		Device:    user.Device,
-		Level:     "info",
-		Content:   logContent,
-		LoginType: model_type.Sign, //把邮箱或者用户名登录，在后台统称为邮箱登录
+	global.DB.Create(&models.Log{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		IP:       user.IP,
+		Address:  user.Address,
+		Device:   user.Device,
+		Level:    "info",
+		Content:  logContent,
 	})
 
 	// 🥤密码更新提醒

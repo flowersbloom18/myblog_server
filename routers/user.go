@@ -5,7 +5,7 @@ import (
 	"myblog_server/middleware"
 )
 
-func (router RouterGroup) UserRouter() {
+func (router RouterGroup) User() {
 	app := api.ApiGroupApp.UserApi
 	// 用户自己注册
 	router.POST("register", app.UserRegisterView)

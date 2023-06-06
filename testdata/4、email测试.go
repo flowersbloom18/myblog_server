@@ -23,10 +23,10 @@ func sendEmail() error {
 	logoEmail := global.Config.Email.LogoEmail // 邮箱Logo
 	sendName := global.Config.Email.SendName   // 发送人昵称
 
-	authCode := "8848"                 // 验证码
-	receiveEmail := "xxxx@qq.com"      // ⚠️接收人邮箱
-	sendTitle := "电子邮件验证码：" + authCode // 发送的标题
-	receiveName := "张三"                // 接收者昵称
+	authCode := "8848"                  // 验证码
+	receiveEmail := "2437560114@qq.com" // ⚠️接收人邮箱
+	sendTitle := "电子邮件验证码：" + authCode  // 发送的标题
+	receiveName := "张三"                 // 接收者昵称
 
 	// 创建邮件模板
 	message := gomail.NewMessage()

@@ -21,7 +21,7 @@ juhe: #根据ip获得地址
 jwt:
   secret: xxx # ⚠️
   expires: 2 # 过期时间两小时
-  issuer: "xxx" # ⚠️
+  issuer: "xx" # ⚠️
 redis:
   ip: 10.211.55.24 # ⚠️
   port: 6379
@@ -30,8 +30,7 @@ redis:
 email:
   host: smtp.qq.com
   port: 465
-  send_email: xxx@qq.com # ⚠️
-  password: xxx # ⚠️
-  send_name: xxx # ⚠️
-  logo_email: xxx# ⚠️
-
+  send_email: xxx@qq.com # ⚠️ 发送人邮箱
+  password: xxx # ⚠️ 邮箱码
+  send_name: xxx # ⚠️发送人昵称
+  logo_email: xxx # ⚠️邮箱发送时候的logo

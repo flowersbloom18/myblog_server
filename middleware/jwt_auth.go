@@ -21,7 +21,9 @@ func JwtAuth() gin.HandlerFunc {
 		claims, err := jwt.ParseToken(token)
 
 		if err != nil {
-			response.FailWithMessage("token错误", c)
+			//response.FailWithMessage("token已失效，请重新登录", c)
+			response.FailWithMessage("登录已过期，请重新登录", c)
+
 			c.Abort()
 			return
 		}
@@ -56,7 +58,8 @@ func JwtAdmin() gin.HandlerFunc {
 		}
 		// 判断是否在redis中
 		if redis_service.CheckLogout(token) {
-			response.FailWithMessage("token已失效", c)
+			//response.FailWithMessage("token已失效，请重新登录", c)
+			response.FailWithMessage("登录已过期，请重新登录", c)
 			c.Abort()
 			return
 		}

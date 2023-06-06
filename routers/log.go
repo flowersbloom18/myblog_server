@@ -5,7 +5,7 @@ import (
 	"myblog_server/middleware"
 )
 
-func (router RouterGroup) LogData() {
+func (router RouterGroup) Log() {
 	app := api.ApiGroupApp.LoginApi
 	// 获取登录日志
 	router.GET("log", middleware.JwtAuth(), app.LogView)

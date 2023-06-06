@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"myblog_server/global"
 	"myblog_server/models"
-	"myblog_server/models/model_type"
 	"myblog_server/models/response"
 	"myblog_server/utils"
 	"myblog_server/utils/jwt"
@@ -29,7 +28,7 @@ func (UserApi) UserRemoveView(c *gin.Context) {
 		response.FailWithMessage("当前登录用户无法被删除！", c)
 		return
 	} else { // 否则可以删除
-		var list []models.UserModel
+		var list []models.User
 
 		count := global.DB.Find(&list, cr.IDList).RowsAffected
 		if count == 0 {
@@ -40,21 +39,20 @@ func (UserApi) UserRemoveView(c *gin.Context) {
 		response.OkWithMessage(fmt.Sprintf("共删除 %d 个用户", count), c)
 
 		// ⚠️系统日志记录
-		var user models.UserModel
+		var user models.User
 		err = global.DB.Take(&user, claims.UserID).Error
 		if err != nil {
 			global.Log.Warn("用户不存在", err)
 		}
 		logContent := fmt.Sprintf("用户删除，删除ID列表：%v", cr.IDList)
-		global.DB.Create(&models.LogModel{
-			UserName:  user.UserName,
-			NickName:  user.NickName,
-			IP:        user.IP,
-			Address:   user.Address,
-			Device:    user.Device,
-			Level:     "info",
-			Content:   logContent,
-			LoginType: model_type.Sign, //把邮箱或者用户名登录，在后台统称为邮箱登录
+		global.DB.Create(&models.Log{
+			UserName: user.UserName,
+			NickName: user.NickName,
+			IP:       user.IP,
+			Address:  user.Address,
+			Device:   user.Device,
+			Level:    "info",
+			Content:  logContent,
 		})
 	}
 }

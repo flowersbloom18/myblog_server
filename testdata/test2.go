@@ -1,10 +1,27 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"myblog_server/core"
+	"myblog_server/global"
+	"myblog_server/models"
+)
 
 func main() {
 
-	idList := [2]uint{1, 3}
-	logContent := fmt.Sprintf("用户删除，删除ID列表%v", idList)
-	fmt.Println(logContent)
+	core.InitConf()
+	global.Log = core.InitLogger()
+	global.DB = core.InitGorm()
+
+	db := global.DB
+	// 查询分类下的博客数量
+	var category models.Category
+	categoryID := 1 // 替换为实际的分类ID
+	err := db.Preload("Blogs").First(&category, categoryID).Error
+	if err != nil {
+		panic("Failed to query category")
+	}
+
+	blogCount := len(category.Blogs)
+	fmt.Printf("Category '%s' has %d blogs\n", category.Name, blogCount)
 }

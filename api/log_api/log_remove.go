@@ -16,7 +16,7 @@ func (LoginApi) LogRemoveView(c *gin.Context) {
 		return
 	}
 
-	var list []models.LogModel
+	var list []models.Log
 	count := global.DB.Find(&list, cr.IDList).RowsAffected
 	if count == 0 {
 		response.FailWithMessage("登录日志不存在", c)

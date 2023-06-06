@@ -11,6 +11,7 @@ import (
 	ip2 "myblog_server/utils/ip"
 	"myblog_server/utils/jwt"
 	"myblog_server/utils/pwd"
+	"strings"
 )
 
 type LoginRequest struct {
@@ -30,13 +31,22 @@ func (UserApi) UserLoginView(c *gin.Context) {
 		return
 	}
 
-	var userModel models.UserModel
+	// 登录方式（qq、邮箱、用户名）
+	var loginType model_type.LoginType
+	str := strings.TrimSpace(cr.UserName)
+	if strings.HasSuffix(str, ".com") {
+		loginType = model_type.LoginEmail
+	} else {
+		loginType = model_type.LoginUsername
+	}
+
+	var userModel models.User
 	err = global.DB.Take(&userModel, "user_name = ? or email = ?", cr.UserName, cr.UserName).Error
 	if err != nil {
 		// 没找到
 		global.Log.Warn("用户名不存在")
 		logContent := "登录中：用户名不存在！"
-		global.DB.Create(&models.LogModel{
+		global.DB.Create(&models.Log{
 			Level:   "warn",
 			Content: logContent,
 		})
@@ -49,15 +59,14 @@ func (UserApi) UserLoginView(c *gin.Context) {
 		global.Log.Warn("用户名密码错误")
 
 		logContent := "用户名密码错误"
-		global.DB.Create(&models.LogModel{
-			UserName:  userModel.UserName,
-			NickName:  userModel.NickName,
-			IP:        userModel.IP,
-			Address:   userModel.Address,
-			Device:    userModel.Device,
-			Level:     "warn",
-			Content:   logContent,
-			LoginType: model_type.Sign, //把邮箱或者用户名登录，在后台统称为邮箱登录
+		global.DB.Create(&models.Log{
+			UserName: userModel.UserName,
+			NickName: userModel.NickName,
+			IP:       userModel.IP,
+			Address:  userModel.Address,
+			Device:   userModel.Device,
+			Level:    "warn",
+			Content:  logContent,
 		})
 		response.FailWithMessage("用户名或密码错误", c)
 		return
@@ -94,16 +103,16 @@ func (UserApi) UserLoginView(c *gin.Context) {
 		return
 	}
 
-	logContent = "登录成功"
-	global.DB.Create(&models.LogModel{
-		UserName:  userModel.UserName,
-		NickName:  userModel.NickName,
-		IP:        ip,
-		Address:   addr,
-		Device:    device,
-		Level:     "info",
-		Content:   logContent,
-		LoginType: model_type.Sign, //把邮箱或者用户名登录，在后台统称为邮箱登录
+	logContent = "通过（" + loginType.String() + "）登录成功"
+
+	global.DB.Create(&models.Log{
+		UserName: userModel.UserName,
+		NickName: userModel.NickName,
+		IP:       ip,
+		Address:  addr,
+		Device:   device,
+		Level:    "info",
+		Content:  logContent,
 	})
 
 	response.OkWithData(token, c)

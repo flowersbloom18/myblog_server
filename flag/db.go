@@ -7,11 +7,14 @@ import (
 
 func Makemigrations() {
 	var err error
-	// 生成表结构
+
 	err = global.DB.Set("gorm:table_options", "ENGINE=InnoDB").
 		AutoMigrate(
-			&models.UserModel{},
-			&models.LogModel{},
+			&models.User{},     // 用户
+			&models.Log{},      // 系统日志
+			&models.Category{}, // 分类
+			&models.Tag{},      // 标签
+			&models.Blog{},     // 博客
 			//go run main.go -db数据库迁移
 		)
 	if err != nil {

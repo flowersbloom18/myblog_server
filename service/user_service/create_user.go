@@ -13,7 +13,7 @@ const Avatar = "/uploads/avatar/favicon.png"
 
 func (UserService) CreateUser(userName, nickName, password string, role model_type.Role, email string, ip string, device string) error {
 	// 判断用户名是否存在
-	var userModel models.UserModel
+	var userModel models.User
 	err := global.DB.Take(&userModel, "user_name = ?", userName).Error
 	if err == nil {
 		return errors.New("用户名已存在")
@@ -27,7 +27,7 @@ func (UserService) CreateUser(userName, nickName, password string, role model_ty
 	//Get
 	address := ip2.GetAddressByIp(ip)
 	// 入库
-	err = global.DB.Create(&models.UserModel{
+	err = global.DB.Create(&models.User{
 		NickName:       nickName,
 		UserName:       userName,
 		Password:       hashPwd,

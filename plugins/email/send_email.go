@@ -1,13 +1,16 @@
 package email
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"gopkg.in/gomail.v2"
 	"myblog_server/global"
 	"strings"
+	"time"
 )
 
-// SendEmail 发送邮箱（超时处理）
+// SendEmail 发送邮箱（⚠️优化邮箱发送的问题，添加了超时处理）
 func SendEmail(receiveEmail, nickName, authCode, sendTitle, htmlContent string) error {
 	// 数据初始化
 	host := global.Config.Email.Host           // 服务器地址
@@ -41,13 +44,38 @@ func SendEmail(receiveEmail, nickName, authCode, sendTitle, htmlContent string) 
 	// 配置SMTP服务器信息
 	dialer := gomail.NewDialer(host, port, sendEmail, pwd)
 
-	// 发送邮件
-	err := dialer.DialAndSend(message)
-	if err != nil {
-		return err // 错误
-	} else {
-		return nil //成功
+	// 方案一：🥤创建一个带超时的上下文
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	// 创建一个用于接收结果的通道
+	result := make(chan error)
+
+	// 启动一个 goroutine 发送邮件，并将结果发送到通道中
+	go func() {
+		// 发送邮件
+		err := dialer.DialAndSend(message)
+		result <- err
+	}()
+
+	// 等待超时或者邮件发送结果
+	select {
+	case <-ctx.Done():
+		return errors.New("发送邮件超时")
+	case err := <-result:
+		if err != nil {
+			return fmt.Errorf("发送邮件失败: %w", err)
+		}
+		return nil
 	}
+
+	// 方案二：发送邮件（没有超时处理）
+	//err := dialer.DialAndSend(message)
+	//if err != nil {
+	//	return err // 错误
+	//} else {
+	//	return nil //成功
+	//}
 }
 
 // ReplaceVariables 替换HTML模板中的变量

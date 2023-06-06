@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"myblog_server/global"
 	"myblog_server/models"
-	"myblog_server/models/model_type"
 	"myblog_server/models/response"
 	"myblog_server/plugins/email"
 	"myblog_server/service"
@@ -28,7 +27,7 @@ func (UserApi) UserUpdatePassword(c *gin.Context) {
 		response.FailWithError(err, &cr, c)
 		return
 	}
-	var user models.UserModel
+	var user models.User
 	err := global.DB.Take(&user, claims.UserID).Error
 	if err != nil {
 		response.FailWithMessage("用户不存在", c)
@@ -56,15 +55,14 @@ func (UserApi) UserUpdatePassword(c *gin.Context) {
 
 	// ⚠️系统日志记录
 	logContent := "密码修改成功"
-	global.DB.Create(&models.LogModel{
-		UserName:  user.UserName,
-		NickName:  user.NickName,
-		IP:        user.IP,
-		Address:   user.Address,
-		Device:    user.Device,
-		Level:     "info",
-		Content:   logContent,
-		LoginType: model_type.Sign, //把邮箱或者用户名登录，在后台统称为邮箱登录
+	global.DB.Create(&models.Log{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		IP:       user.IP,
+		Address:  user.Address,
+		Device:   user.Device,
+		Level:    "info",
+		Content:  logContent,
 	})
 
 	// 🥤密码更新提醒

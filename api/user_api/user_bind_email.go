@@ -22,7 +22,7 @@ type BindEmailRequest struct {
 // 1、绑定邮箱可以使用邮箱登录（⚠️一个邮箱只能被注册一次！）
 // 2、如果忘记密码，是否可以通过邮箱重置密码呢？⚠️🥤
 func (UserApi) UserBindEmailView(c *gin.Context) {
-	_claims, _ := c.Get("claims")
+	_claims, _ := c.Get("claims") // 当前登录用户解析后的信息
 	claims := _claims.(*jwt.Claims)
 
 	// 用户绑定邮箱， 第一次输入是 邮箱
@@ -47,7 +47,7 @@ func (UserApi) UserBindEmailView(c *gin.Context) {
 		// 当使用code后，设置code为空，如果检测到为空，则表示code被使用，需要重新获取
 
 		// 判断邮箱是否存在，不存在正是需要的
-		var userModel models.UserModel
+		var userModel models.User
 		err = global.DB.Take(&userModel, "email = ?", cr.Email).Error
 		// 如果err==nil，表示系统存在改邮箱
 		if err == nil {
@@ -88,7 +88,7 @@ func (UserApi) UserBindEmailView(c *gin.Context) {
 	// 第二次，用户输入邮箱，验证码，密码
 
 	// ⚠️判断邮箱是否存在
-	var userModel models.UserModel
+	var userModel models.User
 	err = global.DB.Take(&userModel, "email = ?", cr.Email).Error
 	// 如果err==nil，表示系统存在改邮箱
 	if err == nil {
@@ -129,7 +129,7 @@ func (UserApi) UserBindEmailView(c *gin.Context) {
 	}
 
 	// 修改用户的邮箱
-	var user models.UserModel
+	var user models.User
 
 	// 查询对应ID的用户并将信息存储到user中
 	err = global.DB.Take(&user, claims.UserID).Error

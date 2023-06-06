@@ -7,13 +7,13 @@ import (
 
 type Option struct {
 	DB   bool
-	User string // -u admin  -u user
+	User string // go run main.go -u admin 或者g o run main.go -u user（普通用户和管理员）
 }
 
 func Parse() Option {
 	//	go run main.go -db数据库迁移
 	//	go run main.go -u admin 管理员创建
-	//	go run main.go -u user  普通用户创建创建
+	//	go run main.go -u user_service  普通用户创建创建
 
 	db := sys_flag.Bool("db", false, "初始化数据库")
 	user := sys_flag.String("u", "", "创建用户")
@@ -49,7 +49,7 @@ func SwitchOption(option Option) {
 		Makemigrations()
 		return
 	}
-	if option.User == "admin" || option.User == "user" {
+	if option.User == "admin" || option.User == "user_service" {
 		CreateUser(option.User)
 		return
 	}

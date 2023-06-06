@@ -3,14 +3,17 @@ package email
 // SendEmailApi 发送邮箱的API
 type SendEmailApi struct{}
 
+// SendBindEmailContent 绑定邮箱
 func (SendEmailApi) SendBindEmailContent(receiveEmail, nickName, authCode string) error {
 	return SendEmail(receiveEmail, nickName, authCode, "电子邮件验证码："+authCode, BindEmailContent())
 }
 
+// SendForgetPwd 忘记密码，找回密码
 func (SendEmailApi) SendForgetPwd(receiveEmail string, authCode string) error {
 	return SendEmail(receiveEmail, "", authCode, "电子邮件验证码："+authCode, BindForgetPwd())
 }
 
+// SendUpdatePwd 密码更新提醒
 func (SendEmailApi) SendUpdatePwd(receiveEmail string) error {
 	return SendEmail(receiveEmail, "", "", "密码更新提醒", BindUpdatePwd())
 }

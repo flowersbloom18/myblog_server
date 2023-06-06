@@ -26,7 +26,8 @@ func ComList[T any](model T, option Option) (list []T, count int64, err error) {
 		option.Sort = "created_at desc" // 默认按照时间往前排
 	}
 	DB = DB.Where(model)
-	for index, column := range option.Likes {
+	// 🥤查找对应字段的数据
+	for index, column := range option.Likes { // 模糊查询字段column，模糊查询的匹配值是option.key
 		if index == 0 {
 			DB.Where(fmt.Sprintf("%s like ?", column), fmt.Sprintf("%%%s%%", option.Key))
 			continue
@@ -35,6 +36,7 @@ func ComList[T any](model T, option Option) (list []T, count int64, err error) {
 	}
 
 	count = DB.Where(model).Find(&list).RowsAffected
+	// 🥤预加载
 	// 这里的query会受上面查询的影响，需要手动复位
 	query := DB.Where(model)
 	for _, preload := range option.Preload {

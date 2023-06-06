@@ -11,12 +11,12 @@ type MODEL struct {
 // PageInfo 分页查询
 type PageInfo struct {
 	Page  int    `form:"page"`  // 第几页🥤
-	Key   string `form:"key"`   //
+	Key   string `form:"key"`   // 模糊查询
 	Limit int    `form:"limit"` // 一页限制几条🥤
 	Sort  string `form:"sort"`  // 排序方式
 }
 
 // RemoveRequest 单个删除/部分删除
 type RemoveRequest struct {
-	IDList []uint `json:"id_list"`
+	IDList []uint `json:"id_list" binding:"required"`
 }

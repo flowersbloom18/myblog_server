@@ -6,7 +6,7 @@ import (
 	"myblog_server/global"
 	"myblog_server/models/model_type"
 	"myblog_server/models/response"
-	"myblog_server/service/user_service"
+	"myblog_server/service"
 	"myblog_server/utils/device"
 )
 
@@ -17,8 +17,9 @@ type UserCreateRequest struct {
 	Role     model_type.Role `json:"role" binding:"required" msg:"请选择权限"`       // 权限  1 管理员  2 普通用户  3 游客
 }
 
-// UserCreateView 创建用户
+// UserCreateView 管理员创建用户
 func (UserApi) UserCreateView(c *gin.Context) {
+	serviceApp := service.ServiceApp
 	var cr UserCreateRequest
 	if err := c.ShouldBindJSON(&cr); err != nil {
 		response.FailWithError(err, &cr, c)
@@ -26,7 +27,8 @@ func (UserApi) UserCreateView(c *gin.Context) {
 	}
 
 	device := device.GetLoginDevice(c)
-	err := user_service.UserService{}.CreateUser(cr.UserName, cr.NickName, cr.Password, cr.Role, "", c.ClientIP(), device)
+
+	err := serviceApp.UserService.CreateUser(cr.UserName, cr.NickName, cr.Password, cr.Role, "", c.ClientIP(), device)
 	if err != nil {
 		global.Log.Error(err)
 		response.FailWithMessage(err.Error(), c)

@@ -37,7 +37,7 @@ func (UserApi) UserUpdateNickName(c *gin.Context) {
 		}
 	}
 
-	var userModel models.UserModel
+	var userModel models.User
 	err = global.DB.Debug().Take(&userModel, claims.UserID).Error
 	if err != nil {
 		response.FailWithMessage("用户不存在", c)
