@@ -16,12 +16,12 @@ system:
   host: 0.0.0.0
   port: 8080
   env: release
-juhe: #根据ip获得地址
-  key: xxx  # ⚠️ 申请并替换（免费50次/天，一般够用）  https://dashboard.juhe.cn/data/index/apply
+juhe: # 根据ip获得详细地址
+  key: xxxx  # ⚠️ 申请并替换（免费50次/天，一般够用） 申请地址： https://www.juhe.cn/docs/api/id/1
 jwt:
-  secret: xxx # ⚠️
-  expires: 2 # 过期时间两小时
-  issuer: "xx" # ⚠️
+  secret: xxxx # ⚠️
+  expires: 12 # 过期时间两小时
+  issuer: "xxxxx" # ⚠️
 redis:
   ip: 10.211.55.24 # ⚠️
   port: 6379
@@ -30,7 +30,17 @@ redis:
 email:
   host: smtp.qq.com
   port: 465
-  send_email: xxx@qq.com # ⚠️ 发送人邮箱
-  password: xxx # ⚠️ 邮箱码
+  send_email: xxxx@qq.com # ⚠️ 发送人邮箱
+  password: xxxx # ⚠️ 邮箱码
   send_name: xxx # ⚠️发送人昵称
-  logo_email: xxx # ⚠️邮箱发送时候的logo
+  logo_email: xxxx # ⚠️邮箱发送时候的logo
+tianapi:
+  # ⚠️ 信息接口，到网站 https://www.tianapi.com/，申请并替换key，每个接口每天100次。 key=你的APIKEY
+  dou_yin_hot: https://apis.tianapi.com/douyinhot/index?key=xxxx   # 抖音热搜，申请地址：https://www.tianapi.com/apiview/155
+  network_hot: https://apis.tianapi.com/networkhot/index?key=xxxx  # 全网热搜，申请地址：https://www.tianapi.com/apiview/223
+  wei_bo_hot: https://apis.tianapi.com/weibohot/index?key=xxxx     # 微博热搜，申请地址：https://www.tianapi.com/apiview/100
+  bullet_in: https://apis.tianapi.com/bulletin/index?key=xxxx      # 每日简报，申请地址：https://www.tianapi.com/apiview/117
+  zao_an: https://apis.tianapi.com/zaoan/index?key=xxxx            # 早安，申请地址：https://www.tianapi.com/apiview/143
+  wan_an: https://apis.tianapi.com/wanan/index?key=xxxx            # 晚安，申请地址：https://www.tianapi.com/apiview/142
+  li_shi: https://apis.tianapi.com/lishi/index?key=xxxx&date=      # ⚠️历史的今天，申请地址：https://www.tianapi.com/apiview/29 key=你的APIKEY&date=0101
+

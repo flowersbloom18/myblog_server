@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// 生成博客链接
 func main() {
 	// 获取当前时间
 	currentTime := time.Now()
@@ -18,7 +19,9 @@ func main() {
 	monthStr := fmt.Sprintf("%02d", month)
 	dayStr := fmt.Sprintf("%02d", day)
 
+	blog := "Vue入门"
 	// 输出结果
-	date := fmt.Sprintf("%d/%s/%s", year, monthStr, dayStr)
+	date := fmt.Sprintf("%d/%s/%s/%s", year, monthStr, dayStr, blog)
 	fmt.Println(date)
+
 }

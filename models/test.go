@@ -1,3 +1,7 @@
 package models
 
-// 临时
+type Comment struct {
+}
+
+type About struct {
+}
