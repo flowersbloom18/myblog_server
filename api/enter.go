@@ -1,6 +1,7 @@
 package api
 
 import (
+	"myblog_server/api/about_api"
 	"myblog_server/api/blog_api"
 	"myblog_server/api/category_api"
 	"myblog_server/api/info_api"
@@ -16,6 +17,7 @@ type ApiGroup struct {
 	TagApi      tag_api.TagApi
 	BlogApi     blog_api.BlogApi
 	InfoApi     info_api.InfoApi
+	AboutAPI    about_api.AboutApi
 }
 
 var ApiGroupApp = &ApiGroup{}

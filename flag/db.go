@@ -15,7 +15,8 @@ func Makemigrations() {
 			&models.Category{}, // 分类
 			&models.Tag{},      // 标签
 			&models.Blog{},     // 博客
-			&models.Info{},     //信息
+			&models.Info{},     // 信息
+			&models.About{},    // 关于
 			//go run main.go -db数据库迁移
 		)
 	if err != nil {

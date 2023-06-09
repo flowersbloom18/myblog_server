@@ -20,6 +20,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
 		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
+		}
 		lists := response.Result.List
 		return lists, nil
 	} else if id == 2 { // 全网热搜
@@ -29,6 +33,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			// 处理解析错误
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
+		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
 		}
 		lists := response.Result.List
 		return lists, nil
@@ -40,6 +48,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
 		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
+		}
 		lists := response.Result.List
 		return lists, nil
 	} else if id == 4 { // 每日简报
@@ -49,6 +61,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			// 处理解析错误
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
+		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
 		}
 		lists := response.Result.List
 		return lists, nil
@@ -60,6 +76,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
 		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
+		}
 		lists := response.Result.Content
 		return lists, nil
 	} else if id == 6 { // 晚安
@@ -70,6 +90,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
 		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
+		}
 		lists := response.Result.Content
 		return lists, nil
 	} else if id == 7 { // 历史的今天
@@ -79,6 +103,10 @@ func GetInfoResult(content string, id int) (any, error) {
 			// 处理解析错误
 			global.Log.Error("JSON解析错误:", err)
 			return "", err
+		}
+		// key为空判断
+		if response.Code == 230 {
+			return "", fmt.Errorf("key错误或为空")
 		}
 		lists := response.Result.List
 		return lists, nil
