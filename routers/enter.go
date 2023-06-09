@@ -29,6 +29,7 @@ func InitRouter() *gin.Engine {
 	routerGroupApp.Blog()
 	routerGroupApp.Info()
 	routerGroupApp.About()
+	routerGroupApp.FriendLink()
 
 	return router
 }
