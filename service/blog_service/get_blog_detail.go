@@ -5,7 +5,7 @@ import (
 	"myblog_server/models"
 )
 
-// GetBlogDetail 将数据库的数据进行再次封装，
+// GetBlogDetail 将数据库的数据进行再次封装，[主要是对标签进行封装]
 func (BlogService) GetBlogDetail(blog models.Blog) ([]BlogResponse, error) {
 
 	var blogResponse []BlogResponse
@@ -47,7 +47,6 @@ func (BlogService) GetBlogDetail(blog models.Blog) ([]BlogResponse, error) {
 		LikeNum:    blog.LikeNum,
 		CollectNum: blog.CollectNum,
 
-		IsComment: blog.IsComment,
 		IsPublish: blog.IsPublish,
 		IsTop:     blog.IsTop,
 

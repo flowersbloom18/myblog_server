@@ -20,4 +20,7 @@ func (router RouterGroup) Blog() {
 	router.PUT("blog/*link", app.BlogUpdateView)
 	// 删除博客
 	router.DELETE("blogs", app.BlogRemoveView)
+
+	// 新增点赞
+	router.POST("blog/like/:id", app.BlogLikeView)
 }

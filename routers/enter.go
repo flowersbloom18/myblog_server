@@ -30,6 +30,9 @@ func InitRouter() *gin.Engine {
 	routerGroupApp.Info()
 	routerGroupApp.About()
 	routerGroupApp.FriendLink()
+	routerGroupApp.Music()
+	routerGroupApp.Collect()
+	routerGroupApp.Comment()
 
 	return router
 }

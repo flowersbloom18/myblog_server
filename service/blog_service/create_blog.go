@@ -53,7 +53,6 @@ func (BlogService) CreateBlog(title, content, cover string, isComment, isPublish
 		CommentNum: 0,          // 评论数
 		LikeNum:    0,          // 点赞数
 		CollectNum: 0,          // 收藏数
-		IsComment:  isComment,  // 是否开启评论
 		IsPublish:  isPublish,  // 是否发布
 		IsTop:      isTop,      // 是否置顶
 		TopTime:    time.Now(), // 置顶时间

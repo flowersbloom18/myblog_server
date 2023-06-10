@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// BlogDetailView 更新分类（名称和封面）
+// BlogDetailView 博客详情
 func (BlogApi) BlogDetailView(c *gin.Context) {
 	blogService := service.ServiceApp.BlogService
 	db := global.DB
@@ -26,6 +26,36 @@ func (BlogApi) BlogDetailView(c *gin.Context) {
 	if err != nil {
 		response.FailWithMessage("博客不存在！", c)
 		return
+	}
+
+	// 收藏数量统计
+	var collect []models.Collect
+	_count := db.Where("blog_id=?", blog.ID).Find(&collect).RowsAffected
+	count := int(_count)
+	// 如果博客中的收藏数量不等于真实的收藏数量，则更新数据。
+	if count != blog.CollectNum {
+		blog.CollectNum = count
+		db.Save(&blog)
+	}
+
+	// 评论数量统计
+	var comments []models.Comment
+	result := global.DB.Debug().
+		Where("page_type = 1").       // 博客类型
+		Where("page = ?", blog.Link). // 页面
+		Find(&comments)
+	commentNum := int(result.RowsAffected)
+	// 如果博客中的评论数量不等于真实的评论数量，则更新数据。
+	if commentNum != blog.CommentNum {
+		blog.CommentNum = commentNum
+		db.Save(&blog)
+	}
+
+	// 博客阅读数量+1
+	blog.ReadNum += 1
+	if err := db.Save(&blog).Error; err != nil {
+		global.Log.Error("博客保存失败。")
+		//return
 	}
 
 	// 对结果再次封装

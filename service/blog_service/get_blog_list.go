@@ -79,7 +79,6 @@ func (BlogService) GetBlogList(list []models.Blog) ([]BlogResponse, error) {
 			LikeNum:    v1.LikeNum,
 			CollectNum: v1.CollectNum,
 
-			IsComment: v1.IsComment,
 			IsPublish: v1.IsPublish,
 			IsTop:     v1.IsTop,
 

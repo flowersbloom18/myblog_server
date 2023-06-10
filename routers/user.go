@@ -22,19 +22,19 @@ func (router RouterGroup) User() {
 	router.DELETE("users", middleware.JwtAdmin(), app.UserRemoveView)
 
 	// 修改当前登录用户的密码
-	router.POST("update_password", middleware.JwtAuth(), app.UserUpdatePassword)
+	router.PUT("update_password", middleware.JwtAuth(), app.UserUpdatePassword)
 	// 修改当前登录用户的昵称和头像
-	router.POST("update_nick_name", middleware.JwtAuth(), app.UserUpdateNickName)
+	router.PUT("update_nick_name", middleware.JwtAuth(), app.UserUpdateNickName)
 	// 管理员修改指定用户的昵称和权限
-	router.POST("update_role", middleware.JwtAdmin(), app.UserUpdateRoleView)
+	router.PUT("update_role", middleware.JwtAdmin(), app.UserUpdateRoleView)
 
 	// 当前登录的用户绑定邮箱
-	router.POST("user_bind_email", middleware.JwtAuth(), app.UserBindEmailView)
+	router.PUT("user_bind_email", middleware.JwtAuth(), app.UserBindEmailView)
 	// 用户忘记密码⚠️
 
 	// 当前登录用户的个人信息
 	router.GET("user_info", middleware.JwtAuth(), app.UserInfoView)
 	// 用户忘记密码，通过邮箱+验证码即可
-	router.POST("user_forget_password", app.UserForgetPasswordView)
+	router.PUT("user_forget_password", app.UserForgetPasswordView)
 
 }
