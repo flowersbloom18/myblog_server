@@ -33,6 +33,7 @@ func InitRouter() *gin.Engine {
 	routerGroupApp.Music()
 	routerGroupApp.Collect()
 	routerGroupApp.Comment()
+	routerGroupApp.Announcement()
 
 	return router
 }
