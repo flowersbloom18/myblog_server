@@ -43,4 +43,15 @@ tianapi:
   zao_an: https://apis.tianapi.com/zaoan/index?key=xxxx            # 早安，申请地址：https://www.tianapi.com/apiview/143
   wan_an: https://apis.tianapi.com/wanan/index?key=xxxx            # 晚安，申请地址：https://www.tianapi.com/apiview/142
   li_shi: https://apis.tianapi.com/lishi/index?key=xxxx&date=      # ⚠️历史的今天，申请地址：https://www.tianapi.com/apiview/29 key=你的APIKEY&date=0101
-
+upload: # 上传配置
+  size: 5                                                 # 上传限制大小（单位MB）
+  path: uploads/file                                      # 上传附件位置（本地）
+qi_niu: # 注册即送10GB存储空间，注册地址：https://portal.qiniu.com/signup
+  enable: true                                        # 默认关闭
+  access_key: xxx
+  secret_key: xxx
+  bucket: xxx                                         # 存储桶名称
+  cdn: xxx                                            # cdn域名
+  zone: xxx                                           # 存储区域
+  prefix: "xxx"                                       # 前缀
+  size: 30                                            # 上传限制大小（单位MB）

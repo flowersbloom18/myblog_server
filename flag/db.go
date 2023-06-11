@@ -23,6 +23,7 @@ func Makemigrations() {
 			&models.Comment{},      // 11、评论
 			&models.CommentOpen{},  // 12、评论开关
 			&models.Announcement{}, // 13、公告
+			&models.Attachment{},   // 14、附件
 			//go run main.go -db数据库迁移
 		)
 	if err != nil {

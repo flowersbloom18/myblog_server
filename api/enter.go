@@ -3,6 +3,7 @@ package api
 import (
 	"myblog_server/api/about_api"
 	"myblog_server/api/announcement_api"
+	"myblog_server/api/attachment_api"
 	"myblog_server/api/blog_api"
 	"myblog_server/api/category_api"
 	"myblog_server/api/collect_api"
@@ -28,6 +29,7 @@ type ApiGroup struct {
 	CollectApi      collect_api.CollectApi
 	CommentAPI      comment_api.CommentApi
 	AnnouncementApi announcement_api.AnnouncementApi
+	AttachmentApi   attachment_api.AttachmentApi
 }
 
 var ApiGroupApp = &ApiGroup{}

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"myblog_server/service/attachment_service"
 	"myblog_server/service/blog_service"
 	"myblog_server/service/category_service"
 	"myblog_server/service/comment_service"
@@ -20,6 +21,7 @@ type ServiceGroup struct {
 	FriendLinkService friendlink_service.FriendLinkService
 	MusicService      music_service.MusicService
 	CommentService    comment_service.CommentService
+	AttachmentService attachment_service.AttachmentService
 }
 
 var ServiceApp = ServiceGroup{}

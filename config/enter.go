@@ -9,4 +9,6 @@ type Config struct {
 	Redis   Redis   `yaml:"redis"`
 	Email   Email   `yaml:"email"`
 	TianApi TianApi `yaml:"tianapi"`
+	QiNiu   QiNiu   `yaml:"qi_niu"`
+	Upload  Upload  `yaml:"upload"`
 }

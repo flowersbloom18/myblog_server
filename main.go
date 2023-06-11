@@ -29,7 +29,7 @@ func main() {
 	router := routers.InitRouter()
 	addr := global.Config.System.Addr()
 
-	// 7、创建定时任务调度器（定期更新数据）
+	// 7、创建定时任务调度器（定期更新信息数据）
 
 	// 创建一个新的 Goroutine 来执行异步请求
 	go func() {
