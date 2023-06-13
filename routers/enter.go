@@ -35,6 +35,7 @@ func InitRouter() *gin.Engine {
 	routerGroupApp.Comment()
 	routerGroupApp.Announcement()
 	routerGroupApp.Attachment()
+	routerGroupApp.Settings()
 
 	return router
 }

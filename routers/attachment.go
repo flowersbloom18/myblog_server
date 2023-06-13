@@ -2,6 +2,7 @@ package routers
 
 import api2 "myblog_server/api"
 
+// Attachment 支持上传到本地服务器和七牛云
 func (router RouterGroup) Attachment() {
 	api := api2.ApiGroupApp.AttachmentApi
 	// 上传附件

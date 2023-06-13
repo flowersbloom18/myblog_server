@@ -12,6 +12,7 @@ import (
 	"myblog_server/api/info_api"
 	"myblog_server/api/log_api"
 	"myblog_server/api/music_api"
+	"myblog_server/api/settings_api"
 	"myblog_server/api/tag_api"
 	"myblog_server/api/user_api"
 )
@@ -30,6 +31,7 @@ type ApiGroup struct {
 	CommentAPI      comment_api.CommentApi
 	AnnouncementApi announcement_api.AnnouncementApi
 	AttachmentApi   attachment_api.AttachmentApi
+	SettingsApi     settings_api.SettingsApi
 }
 
 var ApiGroupApp = &ApiGroup{}

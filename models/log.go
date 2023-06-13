@@ -3,13 +3,13 @@ package models
 // Log 系统日志
 type Log struct {
 	MODEL
-	UserName string `gorm:"size:42" json:"user_name"` // 用户名
-	NickName string `gorm:"size:42" json:"nick_name"` // 昵称
-	IP       string `gorm:"size:20" json:"ip"`        // ip
-	Address  string `gorm:"size:64" json:"address"`   // 地址
-	Device   string `gorm:"size:36" json:"device"`    // 登录设备
-	Level    string `gorm:"size:36" json:"level"`     // 日志水平
-	Content  string `gorm:"size:64" json:"content"`   // 日志内容
+	UserName string `gorm:"size:42" json:"user_name"`  // 用户名
+	NickName string `gorm:"size:42" json:"nick_name"`  // 昵称
+	IP       string `gorm:"size:20" json:"ip"`         // ip
+	Address  string `gorm:"size:64" json:"address"`    // 地址
+	Device   string `gorm:"size:36" json:"device"`     // 登录设备
+	Level    string `gorm:"size:36" json:"level"`      // 日志水平
+	Content  string `gorm:"mediumtext" json:"content"` // 日志内容
 }
 
 //	Level ->

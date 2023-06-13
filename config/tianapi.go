@@ -1,6 +1,7 @@
 package config
 
 type TianApi struct {
+	Key        string `yaml:"key"`         // 官网申请的key
 	DouYinHot  string `yaml:"dou_yin_hot"` // 抖音热搜
 	NetWorkHot string `yaml:"network_hot"` // 全网热搜
 	WeiBoHot   string `yaml:"wei_bo_hot"`  // 微博热搜
