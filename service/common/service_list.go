@@ -23,10 +23,10 @@ func ComList[T any](model T, option Option) (list []T, count int64, err error) {
 	}
 	// 排序
 	if option.Sort == "" {
-		option.Sort = "created_at desc" // 默认按照时间往前排
+		option.Sort = "created_at desc" // 默认按照时间往前排【降序】asc是升序
 	}
 	DB = DB.Where(model)
-	// 🥤查找对应字段的数据
+	// 🥤查找对应字段的数据【可以查询多个】
 	for index, column := range option.Likes { // 模糊查询字段column，模糊查询的匹配值是option.key
 		if index == 0 {
 			DB.Where(fmt.Sprintf("%s like ?", column), fmt.Sprintf("%%%s%%", option.Key))

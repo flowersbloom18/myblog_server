@@ -27,9 +27,16 @@ func (CommentApi) CreateCommentView(c *gin.Context) {
 	if claims.Role == 1 {
 		isAdmin = true
 	}
+	// 根据用户id获取用户当前评论的ip属地
+	var user models.User
+	err := global.DB.Take(&user).Where("id=?", userID).Error
+	if err != nil {
+		response.FailWithMessage("用户不存在", c)
+		return
+	}
 
 	var commentOpen models.CommentOpen
-	err := global.DB.Take(&commentOpen).Error
+	err = global.DB.Take(&commentOpen).Error
 	if err != nil {
 		response.FailWithMessage("评论开启出现未知错误", c)
 		return
@@ -48,13 +55,14 @@ func (CommentApi) CreateCommentView(c *gin.Context) {
 	}
 
 	err = global.DB.Create(&models.Comment{
-		Content:  cr.Content,  // 内容
-		UserID:   userID,      // 用户id
-		PageType: cr.PageType, // 评论页面类型（博客、友链、关于）
-		Page:     cr.Page,     // 评论页面路径
-		IsAdmin:  isAdmin,     // 是否为管理员
-		FatherID: cr.FatherID, // 父级ID
-		PanelID:  cr.PanelID,  // 面板ID
+		Content:   cr.Content,   // 内容
+		UserID:    userID,       // 用户id
+		IPAddress: user.Address, // IP属地
+		PageType:  cr.PageType,  // 评论页面类型（博客、友链、关于）
+		Page:      cr.Page,      // 评论页面路径
+		IsAdmin:   isAdmin,      // 是否为管理员
+		FatherID:  cr.FatherID,  // 父级ID
+		PanelID:   cr.PanelID,   // 面板ID
 	}).Error
 	if err != nil {
 		response.FailWithMessage("评论数据创建出错", c)

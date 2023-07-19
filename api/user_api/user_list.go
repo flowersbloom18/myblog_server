@@ -12,8 +12,8 @@ import (
 )
 
 type UserResponse struct {
-	User   models.User
-	RoleID int `json:"role_id"`
+	User   models.User `json:"user"`
+	RoleID int         `json:"role_id"`
 }
 
 type UserListRequest struct {
@@ -36,8 +36,8 @@ func (UserApi) UserListView(c *gin.Context) {
 	// 查询对应权限的用户
 	list, count, err := common.ComList(models.User{Role: model_type.Role(cr.Role)}, common.Option{
 		PageInfo: cr.PageInfo,           // 第几页、一页多少条、哪个用户（key）
-		Likes:    []string{"user_name"}, // 模糊查询关键字
-		Debug:    true,
+		Likes:    []string{"nick_name"}, // 模糊查询关键字,根据昵称查询
+		//Debug:    true,
 	})
 	if err != nil {
 		global.Log.Warn("获取数据错误：", err)
@@ -48,8 +48,8 @@ func (UserApi) UserListView(c *gin.Context) {
 	for _, value := range list {
 		if model_type.Role(claims.Role) != model_type.PermissionAdmin {
 			value.UserName = desensitization.DesensitizationUserName(value.UserName)
+			value.Email = desensitization.DesensitizationEmail(value.Email)
 		}
-		value.Email = desensitization.DesensitizationEmail(value.Email)
 		users = append(users, UserResponse{
 			User:   value,
 			RoleID: int(value.Role),

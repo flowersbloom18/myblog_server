@@ -5,6 +5,7 @@ import (
 	"myblog_server/global"
 	"myblog_server/models"
 	"myblog_server/models/response"
+	"myblog_server/service/comment_service"
 )
 
 // CommentBlogListView 博客下评论展示【那友链、关于呢？一个一个来】
@@ -31,5 +32,7 @@ func (CommentApi) CommentBlogListView(c *gin.Context) {
 
 	count := query.RowsAffected
 
-	response.OkWithList(comments, count, c)
+	var responseComment = comment_service.CommentService{}
+	result := responseComment.ResponseCommentService(comments)
+	response.OkWithList(result, count, c)
 }

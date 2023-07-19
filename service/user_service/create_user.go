@@ -12,10 +12,17 @@ import (
 const Avatar = "/uploads/avatar/favicon.png"
 
 func (UserService) CreateUser(userName, nickName, password string, role model_type.Role, email string, ip string, device string) error {
+	db := global.DB
+	// 确保同一时间注册的相同用户名当中，只有一个会成功
+	// 开启事务
+	tx := db.Begin()
+
 	// 判断用户名是否存在
 	var userModel models.User
-	err := global.DB.Take(&userModel, "user_name = ?", userName).Error
+	err := tx.Take(&userModel, "user_name = ?", userName).Error
 	if err == nil {
+		// 用户名已存在，回滚事务并返回错误
+		tx.Rollback()
 		return errors.New("用户名已存在")
 	}
 	// 对密码进行hash
@@ -27,7 +34,7 @@ func (UserService) CreateUser(userName, nickName, password string, role model_ty
 	//Get
 	address := ip2.GetAddressByIp(ip)
 	// 入库
-	err = global.DB.Create(&models.User{
+	err = tx.Create(&models.User{
 		NickName:       nickName,
 		UserName:       userName,
 		Password:       hashPwd,
@@ -40,7 +47,11 @@ func (UserService) CreateUser(userName, nickName, password string, role model_ty
 		Device:         device,
 	}).Error
 	if err != nil {
+		// 创建用户失败，回滚事务并返回错误
+		tx.Rollback()
 		return err
 	}
+	// 提交事务
+	tx.Commit()
 	return nil
 }

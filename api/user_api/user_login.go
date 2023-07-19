@@ -47,8 +47,9 @@ func (UserApi) UserLoginView(c *gin.Context) {
 		global.Log.Warn("用户名不存在")
 		logContent := "登录中：用户名不存在！"
 		global.DB.Create(&models.Log{
-			Level:   "warn",
-			Content: logContent,
+			UserName: cr.UserName,
+			Level:    "Warn",
+			Content:  logContent,
 		})
 		response.FailWithMessage("用户名或密码错误", c)
 		return
@@ -56,16 +57,17 @@ func (UserApi) UserLoginView(c *gin.Context) {
 	// 校验密码
 	isCheck := pwd.CheckPwd(userModel.Password, cr.Password)
 	if !isCheck {
-		global.Log.Warn("用户名密码错误")
+		global.Log.Warn("用户名或密码错误")
 
-		logContent := "用户名密码错误"
+		logContent := "登录中：用户名或密码错误"
 		global.DB.Create(&models.Log{
 			UserName: userModel.UserName,
 			NickName: userModel.NickName,
+			Email:    userModel.Email,
 			IP:       userModel.IP,
 			Address:  userModel.Address,
 			Device:   userModel.Device,
-			Level:    "warn",
+			Level:    "Warn",
 			Content:  logContent,
 		})
 		response.FailWithMessage("用户名或密码错误", c)
@@ -86,7 +88,7 @@ func (UserApi) UserLoginView(c *gin.Context) {
 
 	// 获取ip和地址
 	ip, addr := ip2.GetAddrByGin(c)
-	global.Log.Info("\n 🥤userLogin63:ip= " + ip + "\taddr= " + addr)
+	//global.Log.Info("\n 🥤userLogin63:ip= " + ip + "\taddr= " + addr)
 
 	// 获取登录设备
 	device := device.GetLoginDevice(c)
@@ -108,10 +110,11 @@ func (UserApi) UserLoginView(c *gin.Context) {
 	global.DB.Create(&models.Log{
 		UserName: userModel.UserName,
 		NickName: userModel.NickName,
+		Email:    userModel.Email,
 		IP:       ip,
 		Address:  addr,
 		Device:   device,
-		Level:    "info",
+		Level:    "Info",
 		Content:  logContent,
 	})
 

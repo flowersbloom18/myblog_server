@@ -5,7 +5,9 @@ import (
 	"myblog_server/config"
 	"myblog_server/core"
 	"myblog_server/global"
+	"myblog_server/models"
 	"myblog_server/models/response"
+	"myblog_server/utils/jwt"
 )
 
 // SettingsInfoUpdateView 修改某一项的配置信息
@@ -23,7 +25,6 @@ func (SettingsApi) SettingsInfoUpdateView(c *gin.Context) {
 			return
 		}
 		global.Config.SiteInfo = info
-
 	case "email":
 		var info config.Email
 		err = c.ShouldBindJSON(&info)
@@ -77,6 +78,40 @@ func (SettingsApi) SettingsInfoUpdateView(c *gin.Context) {
 		return
 	}
 
-	core.SetYaml()
-	response.OkWith(c)
+	// 查看修改的用户信息并记录日志
+	_claims, _ := c.Get("claims") // 当前登录用户解析后的信息
+	claims := _claims.(*jwt.Claims)
+	var user models.User
+	err = global.DB.Take(&user, "id = ?", claims.UserID).Error
+	if err != nil {
+		global.Log.Warn("用户查询不到")
+	}
+
+	err = core.SetYaml()
+	if err != nil {
+		global.DB.Create(&models.Log{
+			UserName: user.UserName,
+			NickName: user.NickName,
+			Email:    user.Email,
+			IP:       user.IP,
+			Address:  user.Address,
+			Device:   user.Device,
+			Level:    "Warn",
+			Content:  "系统关键信息配置失败",
+		})
+		response.FailWithMessage("系统关键信息配置失败", c)
+		return
+	}
+
+	global.DB.Create(&models.Log{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		Email:    user.Email,
+		IP:       user.IP,
+		Address:  user.Address,
+		Device:   user.Device,
+		Level:    "Info",
+		Content:  "系统关键信息配置成功",
+	})
+	response.OkWithMessage("网站信息更新成功", c)
 }

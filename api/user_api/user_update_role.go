@@ -23,6 +23,7 @@ func (UserApi) UserUpdateRoleView(c *gin.Context) {
 
 	var cr UserRole
 	if err := c.ShouldBindJSON(&cr); err != nil {
+		global.Log.Error("参数绑定错误：", err)
 		response.FailWithError(err, &cr, c)
 		return
 	}
@@ -53,10 +54,11 @@ func (UserApi) UserUpdateRoleView(c *gin.Context) {
 		global.DB.Create(&models.Log{
 			UserName: user.UserName,
 			NickName: user.NickName,
+			Email:    user.Email,
 			IP:       user.IP,
 			Address:  user.Address,
 			Device:   user.Device,
-			Level:    "info",
+			Level:    "Info",
 			Content:  logContent,
 		})
 		response.OkWithMessage("修改权限成功", c)

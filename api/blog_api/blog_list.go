@@ -22,9 +22,9 @@ func (BlogApi) BlogListView(c *gin.Context) {
 
 	list, count, err := common.ComList(models.Blog{}, common.Option{
 		PageInfo: cr,
-		Debug:    true,
-		Likes:    []string{"title"}, // 按照博客名查询,如何添加按照其它方式查询。
-		Preload:  []string{"Tags"},  // 预加载，体现博客跟标签的多对多关系// 大写⚠️
+		//Debug:    true,
+		Likes:   []string{"title"}, // 按照博客名查询,如何添加按照其它方式查询。
+		Preload: []string{"Tags"},  // 预加载，体现博客跟标签的多对多关系// 大写⚠️
 	})
 	if err != nil {
 		global.Log.Warn("获取数据错误：", err)

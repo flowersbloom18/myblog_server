@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"myblog_server/global"
+	"myblog_server/models"
 	"myblog_server/models/response"
 	"myblog_server/service"
 	"myblog_server/utils/device"
@@ -31,6 +32,16 @@ func (UserApi) UserRegisterView(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	global.DB.Create(&models.Log{
+		UserName: cr.UserName,
+		NickName: cr.NickName,
+		IP:       c.ClientIP(),
+		Device:   device,
+		Level:    "Info",
+		Content:  "注册成功",
+	})
+
 	response.OkWithMessage(fmt.Sprintf("用户%s创建成功!", cr.UserName), c)
 	return
 }

@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/robfig/cron/v3"
 	"myblog_server/core"
 	"myblog_server/flag"
 	"myblog_server/global"
 	"myblog_server/routers"
 	"myblog_server/service"
 	"myblog_server/utils/output"
+	"time"
 )
 
 func main() {
@@ -33,17 +33,21 @@ func main() {
 
 	// 创建一个新的 Goroutine 来执行异步请求
 	go func() {
-		// 🥤系统执行前,统一执行一次操作,来更新一次信息数据
+		// 🥤系统执行前,执行一次操作,来更新一次信息数据
 		service.ServiceApp.InfoService.UpdateInfoService()
 	}()
 
-	c := cron.New()
-	// 注册定时任务，每1小时执行一次
-	_, _ = c.AddFunc("0 0 */1 * * *", func() {
-		service.ServiceApp.InfoService.UpdateInfoService()
-	})
-	// 启动定时任务调度器
-	c.Start()
+	// 启动定时任务调度器 1次/30分钟更新热搜数据
+	ticker := time.NewTicker(30 * time.Minute)
+	go func() {
+		for range ticker.C {
+			// 执行定时任务的代码
+			service.ServiceApp.InfoService.UpdateInfoService()
+		}
+	}()
+
+	// 停止定时器
+	defer ticker.Stop()
 
 	// 8、网站运行端口,输出系统运行位置
 	output.PrintSystem()

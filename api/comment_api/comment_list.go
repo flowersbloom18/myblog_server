@@ -5,37 +5,24 @@ import (
 	"myblog_server/global"
 	"myblog_server/models"
 	"myblog_server/models/response"
+	"myblog_server/service/comment_service"
 )
 
 // CommentListView 管理员查看所有评论
 func (CommentApi) CommentListView(c *gin.Context) {
+	// 查询所有评论的数量
+	var count int64
+	global.DB.Model(&models.Comment{}).Count(&count)
 
-	var cr models.PageInfo // contentRequest内容请求 -->cr
-	err := c.ShouldBindQuery(&cr)
-	if err != nil {
-		response.FailWithCode(response.ArgumentError, c)
-		return
-	}
-
-	// 查询所有评论，分页查询，根据评论类型查询
+	// 查询所有评论
 	var comments []models.Comment
-	query := global.DB.Debug().
-		Order("created_at DESC").
-		Offset((cr.Page - 1) * cr.Limit).
-		Limit(cr.Limit)
-
-	if cr.Key != "" {
-		query = query.Where("page_type = ?", cr.Key)
-	}
-
-	// 🥤后期可优化，根据博客名称进行模糊查询
-	//if cr.Title != "" {
-	//	query = query.Where("title LIKE ?", "%"+cr.Title+"%")
-	//}
-
+	// 设置查询条件
+	query := global.DB.Order("created_at DESC")
+	// 按照条件将查询的数据存入comments中
 	query.Find(&comments)
 
-	count := query.RowsAffected
+	var responseComment = comment_service.CommentService{}
+	result := responseComment.ResponseCommentService(comments)
 
-	response.OkWithList(comments, count, c)
+	response.OkWithList(result, count, c)
 }

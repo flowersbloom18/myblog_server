@@ -48,10 +48,11 @@ func (UserApi) UserRemoveView(c *gin.Context) {
 		global.DB.Create(&models.Log{
 			UserName: user.UserName,
 			NickName: user.NickName,
+			Email:    user.Email,
 			IP:       user.IP,
 			Address:  user.Address,
 			Device:   user.Device,
-			Level:    "info",
+			Level:    "Info",
 			Content:  logContent,
 		})
 	}

@@ -12,7 +12,7 @@ func GetInfoResult(content string, id int) (any, error) {
 	// 1、将json数据转为结构体数据
 	// 2、返回数据列表
 
-	if id == 1 { // 抖音热搜
+	if id == 1 { // 1-抖音热搜
 		var response DouYinHotResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {
@@ -26,7 +26,7 @@ func GetInfoResult(content string, id int) (any, error) {
 		}
 		lists := response.Result.List
 		return lists, nil
-	} else if id == 2 { // 全网热搜
+	} else if id == 2 { // 2-全网热搜
 		var response NetWorkHotResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {
@@ -40,7 +40,7 @@ func GetInfoResult(content string, id int) (any, error) {
 		}
 		lists := response.Result.List
 		return lists, nil
-	} else if id == 3 { // 微博热搜
+	} else if id == 3 { // 3-微博热搜
 		var response WeiBoHotResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {
@@ -54,7 +54,7 @@ func GetInfoResult(content string, id int) (any, error) {
 		}
 		lists := response.Result.List
 		return lists, nil
-	} else if id == 4 { // 每日简报
+	} else if id == 4 { // 4-每日简报
 		var response BulletInResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {
@@ -68,7 +68,7 @@ func GetInfoResult(content string, id int) (any, error) {
 		}
 		lists := response.Result.List
 		return lists, nil
-	} else if id == 5 { // 早安
+	} else if id == 5 { // 5-早安
 		var response ZaoAnResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {
@@ -82,7 +82,7 @@ func GetInfoResult(content string, id int) (any, error) {
 		}
 		lists := response.Result.Content
 		return lists, nil
-	} else if id == 6 { // 晚安
+	} else if id == 6 { // 6-晚安
 		var response WanAnResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {
@@ -96,7 +96,7 @@ func GetInfoResult(content string, id int) (any, error) {
 		}
 		lists := response.Result.Content
 		return lists, nil
-	} else if id == 7 { // 历史的今天
+	} else if id == 7 { // 7-历史的今天
 		var response LiShiResponse
 		err := json.Unmarshal([]byte(content), &response)
 		if err != nil {

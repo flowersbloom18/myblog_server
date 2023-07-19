@@ -21,7 +21,6 @@ func (CollectApi) CollectListView(c *gin.Context) {
 	}
 	var collects []models.Collect
 	global.DB.Find(&collects, "user_id=?", userID)
-	global.Log.Info("collects=", collects)
 
 	var blogs []models.Blog
 	for _, v := range collects {
@@ -36,5 +35,4 @@ func (CollectApi) CollectListView(c *gin.Context) {
 	}
 	count := int64(len(collects))
 	response.OkWithList(blogs, count, c)
-
 }

@@ -27,6 +27,6 @@ func (AttachmentApi) AttachmentRemoveView(c *gin.Context) {
 		return
 	}
 	global.DB.Delete(&lists)
-	response.OkWithMessage(fmt.Sprintf("共删除 %d 张附件", count), c)
+	response.OkWithMessage(fmt.Sprintf("共删除 %d 个附件", count), c)
 
 }

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"myblog_server/api"
+	"myblog_server/middleware"
 )
 
 func (router RouterGroup) Music() {
@@ -9,12 +10,12 @@ func (router RouterGroup) Music() {
 	// ⚠️权限给定！
 
 	// 新增音乐
-	router.POST("music", app.MusicCreateView)
+	router.POST("music", middleware.JwtAdmin(), app.MusicCreateView)
 	// 查找-所有音乐
-	router.GET("musics", app.MusicListView)
+	router.GET("music", app.MusicListView)
 
 	// 修改音乐
-	router.PUT("music/:id", app.MusicUpdateView)
+	router.PUT("music/:id", middleware.JwtAdmin(), app.MusicUpdateView)
 	// 删除音乐
-	router.DELETE("musics", app.MusicRemoveView)
+	router.DELETE("music", middleware.JwtAdmin(), app.MusicRemoveView)
 }

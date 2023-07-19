@@ -29,7 +29,7 @@ func (AboutApi) GetAboutView(c *gin.Context) {
 			fmt.Println("创建关于信息失败:", result.Error)
 			return
 		}
-		about.Content = "默认内容"
+		about.Content = "欢迎大家来常来我的网站看呀，嘻嘻。\n系统自动生成的默认内容"
 	}
 	response.OkWithData(about, c)
 }

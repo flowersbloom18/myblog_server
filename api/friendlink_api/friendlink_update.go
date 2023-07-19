@@ -15,6 +15,9 @@ type FriendLinkUpdateRequest struct {
 	Logo        string `json:"logo"`
 	Url         string `json:"url"`
 	IsTop       bool   `json:"is_top" `
+
+	// 不对参数作用
+	TopTime time.Time `json:"top_time"` // 这里只是作为一个属性方便使用
 }
 
 func (FriendLinkApi) FriendLinkUpdateView(c *gin.Context) {
@@ -49,6 +52,15 @@ func (FriendLinkApi) FriendLinkUpdateView(c *gin.Context) {
 			global.Log.Warn("友链已存在", err)
 			response.FailWithMessage("友链已存在", c)
 			return
+		}
+	}
+
+	// 判断置顶状态是否改变，如果改变，且为true则修改。
+	// 置顶排序的问题
+	if cr.IsTop != friendlink1.IsTop {
+		if cr.IsTop == true {
+			global.Log.Warn("置顶啦！")
+			cr.TopTime = time.Now()
 		}
 	}
 

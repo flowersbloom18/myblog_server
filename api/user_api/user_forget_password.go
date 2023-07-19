@@ -65,6 +65,11 @@ func (UserApi) UserForgetPasswordView(c *gin.Context) {
 			response.OkWithMessage("邮箱不存在", c)
 			return
 		}
+		global.DB.Create(&models.Log{
+			Email:   cr.Email,
+			Level:   "Email",
+			Content: "发送-->密码重置验证码信息成功",
+		})
 		response.OkWithMessage("验证码已发送，请查收", c)
 		return
 	}
@@ -125,30 +130,53 @@ func (UserApi) UserForgetPasswordView(c *gin.Context) {
 	}).Error
 	if err != nil {
 		global.Log.Error(err)
+		logContent := "更新密码失败"
+		global.DB.Create(&models.Log{
+			UserName: user.UserName,
+			NickName: user.NickName,
+			Email:    user.Email,
+			IP:       user.IP,
+			Address:  user.Address,
+			Device:   user.Device,
+			Level:    "Warn",
+			Content:  logContent,
+		})
 		response.FailWithMessage("更新密码失败", c)
 		return
 	}
 	// 完成绑定
 	response.OkWithMessage("更新密码成功", c)
 
-	// 系统日志记录
-	logContent := "密码修改成功"
-	global.DB.Create(&models.Log{
-		UserName: user.UserName,
-		NickName: user.NickName,
-		IP:       user.IP,
-		Address:  user.Address,
-		Device:   user.Device,
-		Level:    "info",
-		Content:  logContent,
-	})
-
 	// 🥤密码更新提醒
 	sendApi := email.SendEmailApi{}
 	err = sendApi.SendUpdatePwd(user.Email)
 	if err != nil {
+		logContent := "发送-->密码更新提醒的信息失败"
+		global.DB.Create(&models.Log{
+			UserName: user.UserName,
+			NickName: user.NickName,
+			Email:    user.Email,
+			IP:       user.IP,
+			Address:  user.Address,
+			Device:   user.Device,
+			Level:    "Warn",
+			Content:  logContent,
+		})
 		global.Log.Error("邮箱发送失败", err)
 	}
+
+	// 系统日志记录
+	logContent := "发送-->密码修改成功信息"
+	global.DB.Create(&models.Log{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		Email:    user.Email,
+		IP:       user.IP,
+		Address:  user.Address,
+		Device:   user.Device,
+		Level:    "Email",
+		Content:  logContent,
+	})
 
 	// 删除 key-value
 	err = global.Redis.Del("authCode_" + cr.Email).Err()

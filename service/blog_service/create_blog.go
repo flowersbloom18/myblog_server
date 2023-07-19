@@ -10,7 +10,7 @@ import (
 
 const Cover = "/uploads/loading.gif"
 
-func (BlogService) CreateBlog(title, content, cover string, isComment, isPublish, isTop bool, categoryId, userId uint, tagString []string) error {
+func (BlogService) CreateBlog(title, content, cover string, isPublish, isTop bool, categoryId, userId uint, tagString []string) error {
 	db := global.DB
 
 	// title,abstract,content,cover,
@@ -98,7 +98,5 @@ func (BlogService) CreateBlog(title, content, cover string, isComment, isPublish
 		global.Log.Error("创建博客失败: ", err.Error())
 		return fmt.Errorf("创建分类失败: %s", err.Error())
 	}
-
-	global.Log.Info("博客 '", blog.Title, " '创建成功")
 	return nil
 }

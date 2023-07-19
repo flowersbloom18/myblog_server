@@ -29,8 +29,8 @@ func (FriendLinkApi) FriendLinkListView(c *gin.Context) {
 
 	list, count, err := common.ComList(models.FriendLink{}, common.Option{
 		PageInfo: cr,
-		Debug:    true,
-		Likes:    []string{"name"}, // 按照友链名查询
+		//Debug:    true,
+		Likes: []string{"name"}, // 按照友链名查询
 	})
 	if err != nil {
 		global.Log.Warn("获取数据错误：", err)

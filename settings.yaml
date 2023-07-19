@@ -1,10 +1,10 @@
 mysql:
-  host: 10.211.55.24
+  host: 10.211.55.24 #
   port: 3306
   config: charset=utf8mb4&parseTime=True&loc=Local
-  db: blog_server
-  user: blog_server
-  password: 7F3B4Hmjei2mZfDT
+  db: blog_server #
+  user: blog_server #
+  password: xxx #
   log_level: dev
 logger:
   level: info
@@ -16,55 +16,58 @@ system:
   host: 0.0.0.0
   port: 8080
   env: release
-juhe:
-  key: xxxx
+juhe: # 根据ip获得详细地址
+  key: xxx  #  申请并替换（免费50次/天，一般够用） 申请地址： https://www.juhe.cn/docs/api/id/1
 jwt:
-  secret: xxxx
-  expires: 12
-  issuer: xxxx
+  secret: 7483fdfdfghssd392343521bec # 密钥
+  expires: 24 # 过期时间（小时）
+  issuer: "xxxx" # 颁发人信息
 redis:
-  ip: 10.211.55.24
+  ip: 10.211.55.24 #
   port: 6379
-  password: "123456"
+  password: xxx #
   pool_size: 999
 email:
   host: smtp.qq.com
   port: 465
-  send_email: xxxx@qq.com
-  password: xxxx
-  send_name: xxxx
-  logo_email: xxxx
+  send_email: xxx # 发送人邮箱
+  password: xxx # 邮箱码
+  send_name: xxx # 发送人昵称
+  logo_email: xxx # 邮箱发送时候的logo
 tianapi:
-  key: xxxx
-  dou_yin_hot: https://apis.tianapi.com/douyinhot/index?key=你的APIKEY
-  network_hot: https://apis.tianapi.com/networkhot/index?key=你的APIKEY
-  wei_bo_hot: https://apis.tianapi.com/weibohot/index?key=你的APIKEY
-  bullet_in: https://apis.tianapi.com/bulletin/index?key=你的APIKEY
-  zao_an: https://apis.tianapi.com/zaoan/index?key=你的APIKEY
-  wan_an: https://apis.tianapi.com/wanan/index?key=你的APIKEY
-  li_shi: https://apis.tianapi.com/lishi/index?key=你的APIKEY&date=0101
-qi_niu:
-  enable: false
+  #  信息接口，到网站 https://www.tianapi.com/，申请并替换key，每个接口每天100次。 key=你的APIKEY
+  key: xxxx                         # 这里填入你的key值
+  # 请按照此方式写入，系统会自动替换数据 // 数据更新的快慢取决于api
+  dou_yin_hot: https://apis.tianapi.com/douyinhot/index?key=你的APIKEY    # 1、抖音热搜，申请地址：https://www.tianapi.com/apiview/155
+  network_hot: https://apis.tianapi.com/networkhot/index?key=你的APIKEY   # 2、全网热搜，申请地址：https://www.tianapi.com/apiview/223
+  wei_bo_hot: https://apis.tianapi.com/weibohot/index?key=你的APIKEY      # 3、微博热搜，申请地址：https://www.tianapi.com/apiview/100
+  bullet_in: https://apis.tianapi.com/bulletin/index?key=你的APIKEY       # 4、每日简报，申请地址：https://www.tianapi.com/apiview/117
+  zao_an: https://apis.tianapi.com/zaoan/index?key=你的APIKEY             # 5、早安，申请地址：https://www.tianapi.com/apiview/143
+  wan_an: https://apis.tianapi.com/wanan/index?key=你的APIKEY             # 6、晚安，申请地址：https://www.tianapi.com/apiview/142
+  li_shi: https://apis.tianapi.com/lishi/index?key=你的APIKEY&date=0101   # 7、历史的今天，申请地址：https://www.tianapi.com/apiview/29 key=你的APIKEY&date=0101
+upload: # 上传配置
+  size: 30                                                 # 上传限制大小（单位MB）
+  path: uploads/file                                      # 上传附件位置（本地）
+qi_niu: # 注册即送10GB存储空间，注册地址：https://portal.qiniu.com/signup
+  enable: false                                        # 默认关闭
   access_key: xxx
   secret_key: xxx
-  bucket: xxx
-  cdn: xxx
-  zone: z0
-  prefix: xxx
-  size: 30
-upload:
-  size: 5
-  path: uploads/file
-site_info:
-  create_at: "2023-06-13"
-  bei_an: xxxx
-  title: xxxx
-  logo_light: xxxx
-  logo_dark: xx
-  favicon: xxx
-  copyright_protocol: xxx
-  copyright_info: xxx
-  server_name: xx
-  qq_image: xx
-  gitee_url: https://gitee.com/xx/
-  github_url: https://github.com/xx/
+  bucket: xxx                                 # 存储桶名称
+  cdn: xxx                     # cdn域名
+  zone: xxx                                                # 存储区域
+  prefix: "xxx"                                        # 前缀
+  size: 30                                                # 上传限制大小（单位MB）
+site_info: # 站点信息
+  created_at: "2023-06-01"                                  # 创建时间
+  bei_an: 豫ICP备xxxx号                                # ICP备案号
+  title: xxxx                                            # 站点标题
+  logo_light: xxxx     # 网站logo,默认logo,白天模式
+  logo_dark: xxxx       # 网站logo,夜天模式
+  favicon: xxxx    # 网站图标
+  # 许可协议：
+  copyright_protocol: '<a class="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener noreferrer nofollow">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)</a>'
+  copyright_info: © 2023 xxxx.                      # 版权信息
+  server_name:  http://img.flowersbloom.com.cn/myblog/qiniuyun.png---http://img.flowersbloom.com.cn/myblog/tencentcloud.png    # 服务商信息，用---号隔开
+  qq_image:   http://img.flowersbloom.com.cn/myblog/qq.png   # qq
+  gitee_url: xxxx             # gitee
+  github_url: xxxx            # github

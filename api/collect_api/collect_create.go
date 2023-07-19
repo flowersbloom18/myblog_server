@@ -36,9 +36,20 @@ func (CollectApi) CollectCreateView(c *gin.Context) {
 	// 查询博客是否被当前用户收藏过
 	count := global.DB.Where("blog_id = ?", blogID).Where("user_id = ?", userID).Take(&collect).RowsAffected
 
+	// 收藏过的话，博客收藏列表+1，反之-1【】
+	var blog models.Blog
+	err = global.DB.Where("id = ?", blogID).Take(&blog).Error
+	if err != nil {
+		response.FailWithMessage("数据查询失败", c)
+		return
+	}
+
 	// 收藏过，则删除，否则继续收藏
 	if count != 0 {
 		global.DB.Delete(&collect)
+
+		global.DB.Model(blog).Update("CollectNum", blog.CollectNum-1)
+
 		response.OkWithMessage("取消收藏成功", c)
 		return
 	} else {
@@ -46,6 +57,8 @@ func (CollectApi) CollectCreateView(c *gin.Context) {
 			BlogID: blogID,
 			UserID: int(userID),
 		})
+		global.DB.Model(blog).Update("CollectNum", blog.CollectNum+1)
+
 		response.OkWithMessage("收藏博客成功", c)
 	}
 

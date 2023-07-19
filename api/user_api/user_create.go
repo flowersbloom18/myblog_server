@@ -31,7 +31,8 @@ func (UserApi) UserCreateView(c *gin.Context) {
 	err := serviceApp.UserService.CreateUser(cr.UserName, cr.NickName, cr.Password, cr.Role, "", c.ClientIP(), device)
 	if err != nil {
 		global.Log.Error(err)
-		response.FailWithMessage(err.Error(), c)
+		//response.FailWithMessage(err.Error(), c)
+		response.FailWithMessage("该用户名已注册！", c)
 		return
 	}
 	response.OkWithMessage(fmt.Sprintf("用户%s创建成功!", cr.UserName), c)

@@ -25,6 +25,12 @@ func (UserApi) UserBindEmailView(c *gin.Context) {
 	_claims, _ := c.Get("claims") // 当前登录用户解析后的信息
 	claims := _claims.(*jwt.Claims)
 
+	// 如果用户权限为3即游客，则没有绑定邮箱的权限。
+	if claims.Role == 3 {
+		response.FailWithMessage("当前用户禁止绑定邮箱。", c)
+		return
+	}
+
 	// 用户绑定邮箱， 第一次输入是 邮箱
 	// 后台会给这个邮箱发验证码
 	var cr BindEmailRequest
@@ -82,6 +88,13 @@ func (UserApi) UserBindEmailView(c *gin.Context) {
 			response.OkWithMessage("邮箱不存在", c)
 			return
 		}
+
+		global.Log.Info("cr=", cr)
+		global.DB.Create(&models.Log{
+			Email:   cr.Email,
+			Level:   "Email",
+			Content: "发送-->绑定邮箱验证码成功",
+		})
 		response.OkWithMessage("验证码已发送，请查收", c)
 		return
 	}
@@ -143,9 +156,33 @@ func (UserApi) UserBindEmailView(c *gin.Context) {
 	}).Error
 	if err != nil {
 		global.Log.Error(err)
+		logContent := "邮箱绑定失败"
+		global.DB.Create(&models.Log{
+			UserName: user.UserName,
+			NickName: user.NickName,
+			Email:    user.Email,
+			IP:       user.IP,
+			Address:  user.Address,
+			Device:   user.Device,
+			Level:    "Warn",
+			Content:  logContent,
+		})
 		response.FailWithMessage("绑定邮箱失败", c)
 		return
 	}
+
+	// 系统日志记录
+	logContent := "发送-->邮箱绑定成功信息"
+	global.DB.Create(&models.Log{
+		UserName: user.UserName,
+		NickName: user.NickName,
+		Email:    user.Email,
+		IP:       user.IP,
+		Address:  user.Address,
+		Device:   user.Device,
+		Level:    "Email",
+		Content:  logContent,
+	})
 	// 完成绑定
 	response.OkWithMessage("邮箱绑定成功", c)
 

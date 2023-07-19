@@ -79,18 +79,14 @@ func (InfoService) UpdateInfoService() {
 	// 统一记录日志
 	if success {
 		global.DB.Create(&models.Log{
-			UserName: "系统日志",
-			NickName: "系统日志",
-			Level:    "info",
-			Content:  "信息更新成功",
+			Level:   "Info",
+			Content: "热搜信息更新成功",
 		})
 		global.Log.Info("信息更新成功")
 	} else {
 		global.DB.Create(&models.Log{
-			UserName: "系统日志",
-			NickName: "系统日志",
-			Level:    "info",
-			Content:  "信息更新失败，失败部分为：" + content,
+			Level:   "Warn",
+			Content: "热搜信息更新失败，原因如下：\n" + content,
 		})
 		global.Log.Warn("信息更新失败，失败部分为：" + content)
 	}
@@ -122,7 +118,8 @@ func updateInfo(url string, typeID int) (ok bool, result string) {
 		return
 	}
 
-	if code != 200 { //
+	// 如果找数据获取失败，则不进行数据库的更新。这样更合理。
+	if code != 200 {
 		return false, fmt.Sprintf("{响应状态码:%.f,响应信息:%s}", code, msg)
 	}
 

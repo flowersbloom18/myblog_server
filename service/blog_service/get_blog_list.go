@@ -11,7 +11,7 @@ type BlogResponse struct {
 	Title     string    `json:"title"`      // 标题
 	Abstract  string    `json:"abstract"`   // 摘要
 	Cover     string    `json:"cover"`      // 封面
-	Content   string    `json:content`      // 内容
+	Content   string    `json:"content"`    // 内容
 	CreatedAt time.Time `json:"created_at"` // 创建时间
 
 	ReadNum    int `json:"read_num"`    // 阅读数
@@ -19,13 +19,13 @@ type BlogResponse struct {
 	LikeNum    int `json:"like_num"`    // 点赞数
 	CollectNum int `json:"collect_num"` // 收藏数
 
-	IsComment bool `json:"is_comment"` // 是否评论
-	IsPublish bool `json:"is_publish"` // 是否发布
-	IsTop     bool `json:"is_top"`     // 是否置顶
-	//TopTime   time.Time `json:"top_time"`   // 置顶时间
+	IsPublish bool      `json:"is_publish"` // 是否发布
+	IsTop     bool      `json:"is_top"`     // 是否置顶
+	TopTime   time.Time `json:"top_time"`   // 置顶时间
 
 	Category string   `json:"category"` // 分类名称
 	Author   string   `json:"author"`   // 管理员昵称
+	Avatar   string   `json:"avatar"`   // 管理员头像
 	Link     string   `json:"link"`     // 博客链接
 	Tags     []string `json:"tags"`
 }
@@ -70,7 +70,8 @@ func (BlogService) GetBlogList(list []models.Blog) ([]BlogResponse, error) {
 			Cover:    v1.Cover,
 			Content:  v1.Content,
 
-			Author:   user.UserName,
+			Author:   user.NickName,
+			Avatar:   user.Avatar,
 			Category: category.Name,
 			Tags:     tags,
 
@@ -81,6 +82,7 @@ func (BlogService) GetBlogList(list []models.Blog) ([]BlogResponse, error) {
 
 			IsPublish: v1.IsPublish,
 			IsTop:     v1.IsTop,
+			TopTime:   v1.TopTime,
 
 			CreatedAt: v1.CreatedAt,
 			Link:      v1.Link,

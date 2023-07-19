@@ -56,6 +56,7 @@ func JwtAdmin() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
 		// 判断是否在redis中
 		if redis_service.CheckLogout(token) {
 			//response.FailWithMessage("token已失效，请重新登录", c)

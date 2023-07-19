@@ -2,6 +2,7 @@ package routers
 
 import (
 	"myblog_server/api"
+	"myblog_server/middleware"
 )
 
 func (router RouterGroup) About() {
@@ -9,5 +10,5 @@ func (router RouterGroup) About() {
 	// 获取
 	router.GET("about", app.GetAboutView)
 	// 修改
-	router.POST("about", app.UpdateAboutView)
+	router.POST("about", middleware.JwtAdmin(), app.UpdateAboutView)
 }

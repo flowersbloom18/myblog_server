@@ -10,6 +10,7 @@ import (
 )
 
 func (CollectApi) CollectRemoveView(c *gin.Context) {
+	// 1、批量取消收藏，暂时不用该功能。
 	db := global.DB
 	_claims, _ := c.Get("claims")
 	claims := _claims.(*jwt.Claims)
@@ -47,3 +48,5 @@ func (CollectApi) CollectRemoveView(c *gin.Context) {
 	global.DB.Delete(&list)
 	response.OkWithMessage(fmt.Sprintf("共删除 %d 条数据", count), c)
 }
+
+// 单机取消，批量？？？？？

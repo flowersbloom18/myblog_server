@@ -24,9 +24,9 @@ func (TagApi) TagListView(c *gin.Context) {
 
 	list, count, err := common.ComList(models.Tag{}, common.Option{
 		PageInfo: cr,
-		Debug:    true,
-		Likes:    []string{"name"},  // 按照标签名查询
-		Preload:  []string{"Blogs"}, // 搜索标签的时候预加载博客
+		//Debug:    true,
+		Likes:   []string{"name"},  // 按照标签名查询
+		Preload: []string{"Blogs"}, // 搜索标签的时候预加载博客
 	})
 	if err != nil {
 		global.Log.Warn("获取数据错误：", err)

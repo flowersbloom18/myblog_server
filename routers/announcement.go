@@ -2,6 +2,7 @@ package routers
 
 import (
 	"myblog_server/api"
+	"myblog_server/middleware"
 )
 
 func (router RouterGroup) Announcement() {
@@ -9,5 +10,5 @@ func (router RouterGroup) Announcement() {
 	// 获取
 	router.GET("announcement", app.GetAnnouncementView)
 	// 修改
-	router.POST("announcement", app.UpdateAnnouncementView)
+	router.POST("announcement", middleware.JwtAdmin(), app.UpdateAnnouncementView)
 }

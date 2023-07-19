@@ -30,6 +30,7 @@ var WhiteAttachmentList = []string{
 	"heic",
 	// 音乐类型
 	"mp3",
+	"flac",
 	// 视频类型
 	"mp4",
 }

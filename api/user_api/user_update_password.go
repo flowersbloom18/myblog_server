@@ -22,6 +22,12 @@ func (UserApi) UserUpdatePassword(c *gin.Context) {
 	_claims, _ := c.Get("claims")
 	claims := _claims.(*jwt.Claims)
 
+	// 如果用户权限为3即游客，则没有修改密码的权限。
+	if claims.Role == 3 {
+		response.FailWithMessage("当前用户禁止修改密码。", c)
+		return
+	}
+
 	var cr UpdatePasswordRequest
 	if err := c.ShouldBindJSON(&cr); err != nil {
 		response.FailWithError(err, &cr, c)
@@ -58,10 +64,11 @@ func (UserApi) UserUpdatePassword(c *gin.Context) {
 	global.DB.Create(&models.Log{
 		UserName: user.UserName,
 		NickName: user.NickName,
+		Email:    user.Email,
 		IP:       user.IP,
 		Address:  user.Address,
 		Device:   user.Device,
-		Level:    "info",
+		Level:    "Email",
 		Content:  logContent,
 	})
 

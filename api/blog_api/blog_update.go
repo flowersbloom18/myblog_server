@@ -7,31 +7,25 @@ import (
 	"myblog_server/global"
 	"myblog_server/models"
 	"myblog_server/models/response"
-	"strings"
+	"myblog_server/utils/link"
+	"time"
 )
 
 // BlogUpdateRequest 【暂且忽略，记录数量的情况】
 type BlogUpdateRequest struct {
 	Title      string   `json:"title" binding:"required" msg:"请输入标题"`         // 标题
 	Content    string   `json:"content" binding:"required" msg:"请输入内容"`       // 内容
-	Cover      string   `json:"cover" `                                       // 封面
-	IsComment  bool     `json:"is_comment"`                                   // 是否开启评论
-	IsPublish  bool     `json:"is_publish"`                                   // 是否发布
-	IsTop      bool     `json:"is_top"`                                       // 是否置顶
+	Cover      string   `json:"cover" `                                            // 封面
+	IsPublish  bool     `json:"is_publish"`                                        // 是否发布
+	IsTop      bool     `json:"is_top"`                                            // 是否置顶
 	CategoryID uint     `json:"category_id" binding:"required" msg:"请输入分类id"` // 分类ID
-	Tags       []string `json:"tags"`                                         // 标签列表
-}
+	Tags       []string `json:"tags"`                                              // 标签列表
 
-//{
-//	"Title     "  :"",
-//	"Content   "  :"",
-//	"Cover     "  :"",
-//	"IsComment "  :"",
-//	"IsPublish "  :"",
-//	"IsTop     "  :"",
-//	"CategoryID"  :"",
-//	"Tags      "  :"",
-//}
+	// 不对参数作用
+	Abstract string    `json:"abstract"` // 这里只是作为一个属性方便使用
+	TopTime  time.Time `json:"TopTime"`  // 这里只是作为一个属性方便使用
+	Link     string    `json:"link"`     // 这里只是作为一个属性方便使用
+}
 
 // BlogUpdateView 更新分类（名称和封面）
 func (BlogApi) BlogUpdateView(c *gin.Context) {
@@ -45,27 +39,32 @@ func (BlogApi) BlogUpdateView(c *gin.Context) {
 	}
 
 	// 获取需要更新的博客链接
-	link := c.Param("link")
-	// 去除前缀斜杠
-	link = strings.TrimPrefix(link, "/")
+	id := c.Param("id")
 
 	// 链接是否存在！
 	var blog models.Blog
-	err = db.Take(&blog, "link=?", link).Error
+	err = db.Take(&blog, "id=?", id).Error
 	if err != nil {
 		response.FailWithMessage("博客不存在！", c)
 		return
 	}
 
+	cr.Link = blog.Link
+
 	// 判断更新博客的标题是否重复
 	// 如果标题变化，则需要判断，反之不需要
 	if cr.Title != blog.Title {
-		err = db.Take(models.Blog{}, "title=?", cr.Title).Error
-		if err == nil {
+		var blog models.Blog
+		db.Take(&blog, "title=?", cr.Title)
+		if blog.ID != 0 {
 			response.FailWithMessage("博客标题重复！", c)
 			return
+		} else {
+			// 如果标题发生变化，则link应当也发生变化。
+			cr.Link = link.GetLink(cr.Title)
 		}
 	}
+
 	// 字符串切片，转为实体切片
 	var tags []models.Tag
 	for _, tag := range cr.Tags {
@@ -75,7 +74,13 @@ func (BlogApi) BlogUpdateView(c *gin.Context) {
 		})
 	}
 
+	// 暂时的解决博客标签的关联关系方案：
+	// 1、先删除博客跟标签的所有关联关系，然后在开始创建关联关系。
+	// 目的是解决修改博客时取消标签后，关系依然存在的情况。
+	db.Model(&blog).Association("Tags").Clear()
+
 	// 【判断是存在的还是新增】新增的标签，如果数据库不存在，则创建，如果创建则仅仅建立多对多关系即可。
+	// 补充：如果删除的话应该去掉关联关系。
 	for _, tag := range tags {
 		// 检查标签是否已存在于数据库中
 		var existingTag models.Tag
@@ -99,16 +104,34 @@ func (BlogApi) BlogUpdateView(c *gin.Context) {
 
 	// 更新数据需要同步更新摘要
 	if cr.Content != blog.Content {
-		blog.Abstract = "？？摘要被更新"
+		const MaxSummaryLength = 150
+		var abstract string
+		if len(cr.Content) <= MaxSummaryLength {
+			abstract = cr.Content
+		} else {
+			abstract = cr.Content[:MaxSummaryLength]
+		}
+		cr.Abstract = abstract
+	}
+
+	// 判断置顶状态是否改变，如果改变，且为true则修改。
+	// 置顶排序的问题
+	if cr.IsTop != blog.IsTop {
+		if cr.IsTop == true {
+			global.Log.Warn("置顶啦！")
+			cr.TopTime = time.Now()
+		}
 	}
 
 	// 更新数据
-	maps := structs.Map(&cr)
+	maps := structs.Map(&cr) // 标签除了问题
+
 	err = global.DB.Model(&blog).Updates(maps).Error
 	if err != nil {
 		response.FailWithMessage("更新失败", c)
 		return
 	}
+
 	response.OkWithMessage("更新成功", c)
 	return
 

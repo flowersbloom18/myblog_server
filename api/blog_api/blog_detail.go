@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// BlogDetailView 博客详情
+// BlogDetailView 博客详情针对博客前台访客查看使用的。
 func (BlogApi) BlogDetailView(c *gin.Context) {
 	blogService := service.ServiceApp.BlogService
 	db := global.DB

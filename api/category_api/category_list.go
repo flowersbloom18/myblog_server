@@ -24,9 +24,9 @@ func (CategoryApi) CategoryListView(c *gin.Context) {
 
 	list, count, err := common.ComList(models.Category{}, common.Option{
 		PageInfo: cr,
-		Debug:    true,
-		Likes:    []string{"name"}, // 按照分类名查询
-		Preload:  []string{"Blogs"},
+		//Debug:    true,
+		Likes:   []string{"name"}, // 按照分类名查询
+		Preload: []string{"Blogs"},
 	})
 	if err != nil {
 		global.Log.Warn("获取数据错误：", err)

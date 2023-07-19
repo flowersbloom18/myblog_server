@@ -38,7 +38,8 @@ func (BlogService) GetBlogDetail(blog models.Blog) ([]BlogResponse, error) {
 		Cover:    blog.Cover,
 		Content:  blog.Content,
 
-		Author:   user.UserName,
+		Author:   user.NickName,
+		Avatar:   user.Avatar,
 		Category: category.Name,
 		Tags:     tags,
 
@@ -49,6 +50,7 @@ func (BlogService) GetBlogDetail(blog models.Blog) ([]BlogResponse, error) {
 
 		IsPublish: blog.IsPublish,
 		IsTop:     blog.IsTop,
+		TopTime:   blog.TopTime,
 
 		CreatedAt: blog.CreatedAt,
 		Link:      blog.Link,

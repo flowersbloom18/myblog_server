@@ -8,7 +8,7 @@ type SiteInfo struct {
 	LogoDark          string `yaml:"logo_dark" json:"logo_dark"`                   // 站点logo，夜间模式
 	Favicon           string `yaml:"favicon" json:"favicon"`                       // 网站图标
 	CopyrightProtocol string `yaml:"copyright_protocol" json:"copyright_protocol"` // 许可协议
-	CopyRightInfo     string `yaml:"copyright_info" json:"copyright-info"`         // 版权信息
+	CopyRightInfo     string `yaml:"copyright_info" json:"copyright_info"`         // 版权信息
 	ServerName        string `yaml:"server_name" json:"server_name"`               // 服务商名称
 	QQImage           string `yaml:"qq_image" json:"qq_image"`                     // qq照片
 	GiteeUrl          string `yaml:"gitee_url" json:"gitee_url"`                   // gitee地址

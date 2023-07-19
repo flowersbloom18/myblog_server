@@ -36,5 +36,4 @@ func (router RouterGroup) User() {
 	router.GET("user_info", middleware.JwtAuth(), app.UserInfoView)
 	// 用户忘记密码，通过邮箱+验证码即可
 	router.PUT("user_forget_password", app.UserForgetPasswordView)
-
 }
