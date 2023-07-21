@@ -10,7 +10,7 @@ import (
 
 const Cover = "/uploads/loading.gif"
 
-func (BlogService) CreateBlog(title, content, cover string, isPublish, isTop bool, categoryId, userId uint, tagString []string) error {
+func (BlogService) CreateBlog(title, content, abstract, cover string, isPublish, isTop bool, categoryId, userId uint, tagString []string) error {
 	db := global.DB
 
 	// title,abstract,content,cover,
@@ -29,11 +29,13 @@ func (BlogService) CreateBlog(title, content, cover string, isPublish, isTop boo
 	// 1、摘要获取的字数
 	const MaxSummaryLength = 150
 
-	var abstract string
-	if len(content) <= MaxSummaryLength {
-		abstract = content
-	} else {
-		abstract = content[:MaxSummaryLength]
+	if abstract == "" {
+		// 如果摘要不存在，则给固定。
+		if len(content) <= MaxSummaryLength {
+			abstract = content
+		} else {
+			abstract = content[:MaxSummaryLength]
+		}
 	}
 
 	// 2、封面如果为空则给个
@@ -42,24 +44,45 @@ func (BlogService) CreateBlog(title, content, cover string, isPublish, isTop boo
 	}
 
 	// 3、生成链接
-	link := link.GetLink(title)
+	link2 := link.GetLink(title)
 
-	blog := models.Blog{
-		Title:      title,      // 标题
-		Abstract:   abstract,   // 摘要
-		Content:    content,    // 内容
-		Cover:      cover,      // 封面
-		ReadNum:    0,          // 阅读数
-		CommentNum: 0,          // 评论数
-		LikeNum:    0,          // 点赞数
-		CollectNum: 0,          // 收藏数
-		IsPublish:  isPublish,  // 是否发布
-		IsTop:      isTop,      // 是否置顶
-		TopTime:    time.Now(), // 置顶时间
-		CategoryID: categoryId, // 分类ID
-		UserID:     userId,     // 博主ID
-		Link:       link,       // 博客链接®®®®®®
-		//Tags:       []models.Tag{}, //标签？®®®®®®
+	//如果置顶开启，则设置置顶时间，反之不设置。
+	blog := models.Blog{}
+	if isTop {
+		blog = models.Blog{
+			Title:      title,      // 标题
+			Abstract:   abstract,   // 摘要
+			Content:    content,    // 内容
+			Cover:      cover,      // 封面
+			ReadNum:    0,          // 阅读数
+			CommentNum: 0,          // 评论数
+			LikeNum:    0,          // 点赞数
+			CollectNum: 0,          // 收藏数
+			IsPublish:  isPublish,  // 是否发布
+			IsTop:      isTop,      // 是否置顶
+			TopTime:    time.Now(), // 置顶时间
+			CategoryID: categoryId, // 分类ID
+			UserID:     userId,     // 博主ID
+			Link:       link2,      // 博客链接®®®®®®
+			//Tags:       []models.Tag{}, //标签？®®®®®®
+		}
+	} else {
+		blog = models.Blog{
+			Title:      title,      // 标题
+			Abstract:   abstract,   // 摘要
+			Content:    content,    // 内容
+			Cover:      cover,      // 封面
+			ReadNum:    0,          // 阅读数
+			CommentNum: 0,          // 评论数
+			LikeNum:    0,          // 点赞数
+			CollectNum: 0,          // 收藏数
+			IsPublish:  isPublish,  // 是否发布
+			IsTop:      isTop,      // 是否置顶
+			CategoryID: categoryId, // 分类ID
+			UserID:     userId,     // 博主ID
+			Link:       link2,      // 博客链接®®®®®®
+			//Tags:       []models.Tag{}, //标签？®®®®®®
+		}
 	}
 
 	// []string -->  []models.Tag

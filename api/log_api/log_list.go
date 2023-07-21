@@ -53,6 +53,7 @@ func (LoginApi) LogView(c *gin.Context) {
 		if model_type.Role(claims.Role) != model_type.PermissionAdmin {
 			value.UserName = desensitization.DesensitizationUserName(value.UserName)
 			value.Email = desensitization.DesensitizationEmail(value.Email)
+			value.IP = "****"
 		}
 		users = append(users, LogResponse{
 			ID:        value.ID,

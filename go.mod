@@ -10,7 +10,6 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/liu-cn/json-filter v0.0.0-20230502155614-55cfc45716ad
 	github.com/qiniu/go-sdk/v7 v7.16.0
-	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.9.2
 	golang.org/x/crypto v0.9.0
 	golang.org/x/net v0.10.0

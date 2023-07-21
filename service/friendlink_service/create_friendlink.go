@@ -29,14 +29,25 @@ func (FriendLinkService) CreateFriendLink(name, description, logo, url string, i
 		return fmt.Errorf("'%s'友链已存在", existingFriendLink.Name)
 	}
 
-	// 创建友链
-	friendlink := models.FriendLink{
-		Name:        name,
-		Description: description,
-		Logo:        logo,
-		Url:         url,
-		IsTop:       isTop,
-		TopTime:     time.Now(),
+	friendlink := models.FriendLink{}
+	// 创建友链-(如果置顶开启的,则给出topTime反之不给)
+	if isTop {
+		friendlink = models.FriendLink{
+			Name:        name,
+			Description: description,
+			Logo:        logo,
+			Url:         url,
+			IsTop:       isTop,
+			TopTime:     time.Now(),
+		}
+	} else {
+		friendlink = models.FriendLink{
+			Name:        name,
+			Description: description,
+			Logo:        logo,
+			Url:         url,
+			IsTop:       isTop,
+		}
 	}
 
 	err = db.Create(&friendlink).Error

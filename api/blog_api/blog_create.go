@@ -10,8 +10,9 @@ import (
 )
 
 type BlogCreateRequest struct {
-	Title      string   ` json:"title" binding:"required" msg:"请输入标题"`        // 标题
+	Title      string   `json:"title" binding:"required" msg:"请输入标题"`         // 标题
 	Content    string   `json:"content" binding:"required" msg:"请输入内容"`       // 内容
+	Abstract   string   `json:"abstract"`                                     // 摘要
 	Cover      string   `json:"cover" `                                       // 封面
 	IsPublish  bool     `json:"is_publish"`                                   // 是否发布
 	IsTop      bool     `json:"is_top"`                                       // 是否置顶
@@ -40,7 +41,7 @@ func (BlogApi) BlogCreateView(c *gin.Context) {
 
 	// 创建的service
 	err := serviceApp.BlogService.CreateBlog(
-		cr.Title, cr.Content, cr.Cover, cr.IsPublish, cr.IsTop,
+		cr.Title, cr.Content, cr.Abstract, cr.Cover, cr.IsPublish, cr.IsTop,
 		cr.CategoryID, claims.UserID, cr.Tags)
 	if err != nil {
 		global.Log.Error("创建博客失败: ", err.Error())

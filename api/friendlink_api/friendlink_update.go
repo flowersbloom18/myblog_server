@@ -61,6 +61,9 @@ func (FriendLinkApi) FriendLinkUpdateView(c *gin.Context) {
 		if cr.IsTop == true {
 			global.Log.Warn("置顶啦！")
 			cr.TopTime = time.Now()
+		} else {
+			// 取消置顶，时间归为0值
+			cr.TopTime = time.Time{}
 		}
 	}
 

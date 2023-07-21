@@ -19,7 +19,7 @@ system:
 juhe: # 根据ip获得详细地址
   key: xxx  #  申请并替换（免费50次/天，一般够用） 申请地址： https://www.juhe.cn/docs/api/id/1
 jwt:
-  secret: 7483fdfdfghssd392343521bec # 密钥
+  secret: ssd23foifjowjox09sf11 # 密钥
   expires: 24 # 过期时间（小时）
   issuer: "xxxx" # 颁发人信息
 redis:

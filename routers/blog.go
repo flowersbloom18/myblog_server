@@ -29,5 +29,5 @@ func (router RouterGroup) Blog() {
 	router.POST("blog/like/:id", app.BlogLikeView)
 
 	// 获取博客总浏览量
-	router.GET("blog/views", middleware.JwtAuth(), app.BlogAllPageView)
+	router.GET("blog/views", app.BlogAllPageView)
 }

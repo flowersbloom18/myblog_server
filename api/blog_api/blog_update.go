@@ -15,11 +15,11 @@ import (
 type BlogUpdateRequest struct {
 	Title      string   `json:"title" binding:"required" msg:"请输入标题"`         // 标题
 	Content    string   `json:"content" binding:"required" msg:"请输入内容"`       // 内容
-	Cover      string   `json:"cover" `                                            // 封面
-	IsPublish  bool     `json:"is_publish"`                                        // 是否发布
-	IsTop      bool     `json:"is_top"`                                            // 是否置顶
+	Cover      string   `json:"cover" `                                       // 封面
+	IsPublish  bool     `json:"is_publish"`                                   // 是否发布
+	IsTop      bool     `json:"is_top"`                                       // 是否置顶
 	CategoryID uint     `json:"category_id" binding:"required" msg:"请输入分类id"` // 分类ID
-	Tags       []string `json:"tags"`                                              // 标签列表
+	Tags       []string `json:"tags"`                                         // 标签列表
 
 	// 不对参数作用
 	Abstract string    `json:"abstract"` // 这里只是作为一个属性方便使用
@@ -120,11 +120,14 @@ func (BlogApi) BlogUpdateView(c *gin.Context) {
 		if cr.IsTop == true {
 			global.Log.Warn("置顶啦！")
 			cr.TopTime = time.Now()
+		} else {
+			// 取消置顶，时间归为0值
+			cr.TopTime = time.Time{}
 		}
 	}
 
 	// 更新数据
-	maps := structs.Map(&cr) // 标签除了问题
+	maps := structs.Map(&cr) // 标签除了问题。
 
 	err = global.DB.Model(&blog).Updates(maps).Error
 	if err != nil {
